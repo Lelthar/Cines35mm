@@ -3,6 +3,7 @@ package tec.fabian.cines35mm;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +16,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private Conexion conexion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +60,15 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            VerificarUsuario();
+                            try {
+                                VerificarUsuario();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             return true;
                         }
                         else {
@@ -64,7 +82,15 @@ public class LoginActivity extends AppCompatActivity {
         Ingresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VerificarUsuario();
+                try {
+                    VerificarUsuario();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -76,12 +102,22 @@ public class LoginActivity extends AppCompatActivity {
                 AbrirCrearCuenta();
             }
         });
+
+
     }
 
     //Boton ingresar
-    protected void VerificarUsuario(){
+    protected void VerificarUsuario() throws ExecutionException, InterruptedException, JSONException {
         EditText ETCorreo = (EditText)findViewById(R.id.txtCorreo);
         EditText ETContrasenna = (EditText)findViewById(R.id.txtContrasenna);
+
+        //conexion = new Conexion(); //Esta clase realiza la conexion al backend de la appp
+        //JSONObject jsonObject = new JSONObject(); //Se crea un json object para pasarselo al metodo de conexion
+        DownLoadTask user_extendeds = new DownLoadTask();
+
+        String result="";
+        //
+        result = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json").get();
 
         if( ETCorreo.getText().toString().length() == 0 ) {
             ETCorreo.setError("Ingrese el correo");
@@ -97,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             String correo = ETCorreo.getText().toString().trim();
             String contrasenna = ((EditText) findViewById(R.id.txtContrasenna)).getText().toString().trim();
 
-            if(correo.trim().equals("prueba@correo.com") && contrasenna.trim().equals("123")){
+            if(UserExist(result,correo,contrasenna)){
                 //Abrir ventana principal
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("correo",correo);
@@ -105,7 +141,20 @@ public class LoginActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(this,"Correo o contraseña incorrectos",Toast.LENGTH_SHORT).show();
             }
+            //Toast.makeText(this,result,Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean UserExist(String jsonDatos,String correo, String password) throws JSONException {
+        JSONArray datos = new JSONArray(jsonDatos);
+
+        for(int i = 0; i < datos.length(); i++){
+            JSONObject elemento = datos.getJSONObject(i);
+            if(elemento.getString("correo").equals(correo) && elemento.getString("contrasenha").equals(password)){
+                return true;
+            }
+        }
+        return false;
     }
 
     //Boton crear cuenta
@@ -121,6 +170,44 @@ public class LoginActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public class DownLoadTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... strings) {
+            String xmlString;
+            HttpURLConnection urlConnection = null;
+            URL url = null;
+
+            try {
+                url = new URL(strings[0]);
+                urlConnection = (HttpURLConnection)url.openConnection();
+                urlConnection.setRequestProperty("Content-Type","application/json");
+                urlConnection.setRequestMethod("GET");
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    StringBuilder xmlResponse = new StringBuilder();
+                    BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String strLine = null;
+                    while ((strLine = input.readLine()) != null) {
+                        xmlResponse.append(strLine);
+                    }
+                    xmlString = xmlResponse.toString();
+                    //xmlString += urlConnection.getHeaderField("access-token");
+                    input.close();
+                    return xmlString;
+
+                }else{
+                    return "Error";
+                }
+            }
+            catch (Exception e) {
+                return e.toString();
+            }
+            finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+        }
     }
 
 }
