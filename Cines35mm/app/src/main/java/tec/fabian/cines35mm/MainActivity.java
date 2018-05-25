@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     //----------------Inicio Declaracion de variables-----------------
-    String nick,correo;
+    String nick,correo,tipo;
 
     // Menu desplegable
     private String[] mMenuTitles;
@@ -35,20 +35,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(this,"-- WIP Actividad principal --",Toast.LENGTH_SHORT).show();
-
         Intent i=getIntent();
-        nick="Prueba";
+        nick=i.getExtras().getString("nick");
         correo=i.getExtras().getString("correo");
+        tipo=i.getExtras().getString("tipoUsuario");
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //--------------------------Funcionalidad para el menu-------------------------
-        mTitle = "Recomendaciones";
 
-        mMenuTitles = new String[]{"Películas Disponibles" , "Recomendaciones", "Favoritas", "Perfil", "Salir"};
+
+        if(tipo.equals("Administrador"))
+            mMenuTitles = new String[]{"Películas Disponibles", "Insertar Película", "Bloquear/Desbloquear Usuario", "Perfil", "Salir"};
+        else
+            mMenuTitles = new String[]{"Películas Disponibles", "Recomendaciones", "Favoritas", "Perfil", "Salir"};
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -92,7 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Recomendaciones");
+
+        if(tipo.equals("Administrador")) {
+            setTitle("Películas Disponibles");
+            //fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+            //ChangeFrag(recomendaciones);
+        }
+        else {
+            setTitle("Recomendaciones");
+            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+            ChangeFrag(recomendaciones);
+        }
+
     }
 
 
@@ -106,28 +120,52 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int position) {
 
         int item=position;
-        switch (item){
-            case 1:
-                Toast.makeText(this,"------ WIP Disponibles ------",Toast.LENGTH_SHORT).show();
-                //ChangeFrag(new Mensajes());
-                break;
-            case 2:
-                Toast.makeText(this,"------ WIP Recomendaciones ------",Toast.LENGTH_SHORT).show();
-                Recomendaciones recomendaciones= Recomendaciones.newInstance(nick,correo);
-                //ChangeFrag(recomendaciones);
-                break;
-            case 3:
-                Toast.makeText(this,"------ WIP Favoritas ------",Toast.LENGTH_SHORT).show();
-                //ChangeFrag(new Mensajes());
-                break;
-            case 4:
-                Toast.makeText(this,"------ WIP Perfil ------",Toast.LENGTH_SHORT).show();
-                //ChangeFrag(new Mensajes());
-                break;
-            case 5:
-                finish();
-                break;
+        if(tipo.equals("Administrador")) {
+            switch (item) {
+                case 1:
+                    Toast.makeText(this, "------ WIP Disponibles ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 2:
+                    Toast.makeText(this, "------ WIP Insertar Pelicula ------", Toast.LENGTH_SHORT).show();
+                    //fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+                    //ChangeFrag(recomendaciones);
+                    break;
+                case 3:
+                    Toast.makeText(this, "------ WIP Bloquear/Desbloquear ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 4:
+                    Toast.makeText(this, "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 5:
+                    finish();
+                    break;
 
+            }
+        }else {
+            switch (item) {
+                case 1:
+                    Toast.makeText(this, "------ WIP Disponibles ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 2:
+                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+                    ChangeFrag(recomendaciones);
+                    break;
+                case 3:
+                    Toast.makeText(this, "------ WIP Favoritas ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 4:
+                    Toast.makeText(this, "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
+                    //ChangeFrag(new Mensajes());
+                    break;
+                case 5:
+                    finish();
+                    break;
+            }
         }
 
         // Highlight the selected item, update the title, and close the drawer

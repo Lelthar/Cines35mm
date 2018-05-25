@@ -29,27 +29,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
+
     private Conexion conexion;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-       /* new AlertDialog.Builder(this)
-                .setTitle("¡Importante!")
-                .setMessage("Datos de prueba" +
-                        "\n\n" +
-                        "Correo: prueba@correo.com\n" +
-                        "Contraseña: 123\n")
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .show();//*/
-        Toast.makeText(this,"-- WIP Login --",Toast.LENGTH_SHORT).show();
 
         //Llamar verificar usuario en action done de EditText Contrasenna
         ((EditText)findViewById(R.id.txtContrasenna)).setOnEditorActionListener(
@@ -132,9 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if(UserExist(result,correo,contrasenna)){
                 //Abrir ventana principal
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("correo",correo);
-                startActivity(i);
+                LlamarMainActivity(ObtenerJSon(result,correo));
             }else{
                 Toast.makeText(this,"Correo o contraseña incorrectos",Toast.LENGTH_SHORT).show();
             }
@@ -152,6 +137,38 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private JSONObject ObtenerJSon(String JSonDatos, String correo) throws JSONException{
+        JSONArray datos = new JSONArray(JSonDatos);
+
+        for(int i = 0; i < datos.length(); i++){
+            JSONObject elemento = datos.getJSONObject(i);
+            if(elemento.getString("correo").equals(correo)){
+                return elemento;
+            }
+        }
+        return null;
+    }
+
+    private String ObtenerDatoJSon(JSONObject JSonDatos, String nombreDato) throws JSONException {
+        return JSonDatos.getString(nombreDato);
+    }
+
+    protected void LlamarMainActivity(JSONObject result) throws JSONException {
+        //Vaciar edittexts
+        EditText ETCorreo = (EditText)findViewById(R.id.txtCorreo);
+        EditText ETContrasenna = (EditText)findViewById(R.id.txtContrasenna);
+
+        ETCorreo.setText("");
+        ETContrasenna.setText("");
+
+        //Abrir ventana principal
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.putExtra("correo",ObtenerDatoJSon(result,"correo"));
+        i.putExtra("nick",ObtenerDatoJSon(result,"nick"));
+        i.putExtra("tipoUsuario",ObtenerDatoJSon(result,"tipo_cuenta"));
+        startActivity(i);
     }
 
     //Boton crear cuenta

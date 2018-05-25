@@ -3,12 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Recomendaciones">
+    tools:context=".fRecomendaciones">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/labelNoPublicaciones"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#FFF"
+        android:text="Agregue películas a favoritos para encontrar recomendaciones"
+        android:visibility="visible"/>
+
+    <ListView
+        android:id="@+id/listEncontrados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp">
+    </ListView>
 
 </FrameLayout>

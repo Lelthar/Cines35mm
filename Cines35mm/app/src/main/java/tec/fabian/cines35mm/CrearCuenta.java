@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -44,7 +48,44 @@ public class CrearCuenta extends AppCompatActivity {
         contrasenna = findViewById(R.id.txtContrasenna);
         contrasenna_confirmacion = findViewById(R.id.txtConfirmarContrasenna);
 
-        Toast.makeText(this,"-- WIP Crear cuenta --",Toast.LENGTH_SHORT).show();
+        //Validar cuenta en action done de EditText Contrasenna
+        ((EditText)findViewById(R.id.txtConfirmarContrasenna)).setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            try {
+                                validacionCrearCuenta();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                });
+
+        //Validar cuenta en el boton crear cuenta
+        ((Button)findViewById(R.id.btnCrearCuenta)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            validacionCrearCuenta();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
@@ -60,7 +101,7 @@ public class CrearCuenta extends AppCompatActivity {
         return matcher.matches();
     }
 
-    public void validacionCrearCuenta(View view) throws JSONException, ExecutionException, InterruptedException{
+    public void validacionCrearCuenta() throws JSONException, ExecutionException, InterruptedException{
         EditText ETCorreo = (EditText)findViewById(R.id.txtCorreo);
         EditText ETNick = (EditText)findViewById(R.id.txtNick);
         EditText ETContrasenna = (EditText)findViewById(R.id.txtContrasenna);
@@ -96,7 +137,7 @@ public class CrearCuenta extends AppCompatActivity {
 
             if(!UserExist(result,correo,nick)){
                 //Crear cuenta
-                registrarUsuario(view);
+                registrarUsuario();
             }else{
                 Toast.makeText(this,"Error: Ya existe un correo o nick igual registrado",Toast.LENGTH_LONG).show();
             }
@@ -115,7 +156,7 @@ public class CrearCuenta extends AppCompatActivity {
         return false;
     }
 
-    public void registrarUsuario(View view) throws JSONException, ExecutionException, InterruptedException {
+    public void registrarUsuario() throws JSONException, ExecutionException, InterruptedException {
          String mail = this.correo.getText().toString();
          String nick = this.nickname.getText().toString();
          String password = this.contrasenna.getText().toString();
@@ -133,8 +174,7 @@ public class CrearCuenta extends AppCompatActivity {
 
              if(result.equals("Created")) {
                  Toast.makeText(this, "Se creó exitosamente la cuenta", Toast.LENGTH_LONG).show();
-                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                 startActivity(i);
+                 finish();
              }
          }
     }
