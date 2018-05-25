@@ -97,11 +97,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //conexion = new Conexion(); //Esta clase realiza la conexion al backend de la appp
         //JSONObject jsonObject = new JSONObject(); //Se crea un json object para pasarselo al metodo de conexion
-        DownLoadTask user_extendeds = new DownLoadTask();
+        Conexion user_extendeds = new Conexion();
 
         String result="";
         //
-        result = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json").get();
+        result = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json","GET").get();
 
         if( ETCorreo.getText().toString().length() == 0 ) {
             ETCorreo.setError("Ingrese el correo");
@@ -184,44 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
-    }
-
-    public class DownLoadTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... strings) {
-            String xmlString;
-            HttpURLConnection urlConnection = null;
-            URL url = null;
-
-            try {
-                url = new URL(strings[0]);
-                urlConnection = (HttpURLConnection)url.openConnection();
-                urlConnection.setRequestProperty("Content-Type","application/json");
-                urlConnection.setRequestMethod("GET");
-                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    StringBuilder xmlResponse = new StringBuilder();
-                    BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    String strLine = null;
-                    while ((strLine = input.readLine()) != null) {
-                        xmlResponse.append(strLine);
-                    }
-                    xmlString = xmlResponse.toString();
-                    //xmlString += urlConnection.getHeaderField("access-token");
-                    input.close();
-                    return xmlString;
-
-                }else{
-                    return "Error";
-                }
-            }
-            catch (Exception e) {
-                return e.toString();
-            }
-            finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-        }
     }
 
 }

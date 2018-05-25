@@ -17,20 +17,40 @@ public class Conexion extends AsyncTask<String, Void, String>{
         try {
             url = new URL(strings[0]);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(strings[1]);
-            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            //conn.setRequestProperty("Content-Transfer-Encoding","binary");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
+            if(!strings[1].equals("GET")){
+                conn.setRequestMethod(strings[1]);
+                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                //conn.setRequestProperty("Content-Transfer-Encoding","binary");
+                conn.setRequestProperty("Accept","application/json");
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
 
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            os.writeBytes(strings[2]);
+                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                os.writeBytes(strings[2]);
 
-            os.flush();
-            os.close();
+                os.flush();
+                os.close();
 
-            return conn.getResponseMessage();
+                return conn.getResponseMessage();
+            }else{
+                conn.setRequestMethod(strings[1]);
+                conn.setRequestProperty("Content-Type","application/json");
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    StringBuilder jsonResponse = new StringBuilder();
+                    BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String strLine = null;
+                    while ((strLine = input.readLine()) != null) {
+                        jsonResponse.append(strLine);
+                    }
+                    //xmlString += urlConnection.getHeaderField("access-token");
+                    input.close();
+                    return jsonResponse.toString();
+
+                }else{
+                    return "Error";
+                }
+            }
+
         } catch (MalformedURLException e) {
             //e.printStackTrace();
             return e.toString();
