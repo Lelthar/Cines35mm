@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(tipo.equals("Administrador"))
-            mMenuTitles = new String[]{"Películas Disponibles", "Insertar Película", "Bloquear/Desbloquear Usuario", "Perfil", "Salir"};
+            mMenuTitles = new String[]{"Películas Disponibles", "Agregar Película", "Bloquear/Desbloquear Usuario", "Perfil", "Salir"};
         else
             mMenuTitles = new String[]{"Películas Disponibles", "Recomendaciones", "Favoritas", "Perfil", "Salir"};
 
@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(tipo.equals("Administrador")) {
             setTitle("Películas Disponibles");
-            //fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
-            //ChangeFrag(recomendaciones);
+            fDisponibles disponibles = fDisponibles.newInstance();
+            ChangeFrag(disponibles);
         }
         else {
             setTitle("Recomendaciones");
@@ -123,13 +123,12 @@ public class MainActivity extends AppCompatActivity {
         if(tipo.equals("Administrador")) {
             switch (item) {
                 case 1:
-                    Toast.makeText(this, "------ WIP Disponibles ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fDisponibles disponibles = fDisponibles.newInstance();
+                    ChangeFrag(disponibles);
                     break;
                 case 2:
-                    Toast.makeText(this, "------ WIP Insertar Pelicula ------", Toast.LENGTH_SHORT).show();
-                    //fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
-                    //ChangeFrag(recomendaciones);
+                    fAgregarPelicula agregarPelicula= fAgregarPelicula.newInstance();
+                    ChangeFrag(agregarPelicula);
                     break;
                 case 3:
                     Toast.makeText(this, "------ WIP Bloquear/Desbloquear ------", Toast.LENGTH_SHORT).show();
@@ -147,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
         }else {
             switch (item) {
                 case 1:
-                    Toast.makeText(this, "------ WIP Disponibles ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fDisponibles disponibles = fDisponibles.newInstance();
+                    ChangeFrag(disponibles);
                     break;
                 case 2:
                     fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);

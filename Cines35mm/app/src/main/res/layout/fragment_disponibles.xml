@@ -3,23 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fRecomendaciones">
+    tools:context=".fDisponibles">
 
     <TextView
-        android:id="@+id/labelNoRecomendaciones"
+        android:id="@+id/labelNoDisponibles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="25dp"
         android:textColor="#FFF"
-        android:text="Agregue películas a favoritos para encontrar recomendaciones"
+        android:text="No existen películas disponibles"
         android:visibility="visible"/>
 
     <ListView
-        android:id="@+id/listRecomendaciones"
+        android:id="@+id/listDisponibles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dividerHeight="0dp"/>
-
 
 </FrameLayout>
