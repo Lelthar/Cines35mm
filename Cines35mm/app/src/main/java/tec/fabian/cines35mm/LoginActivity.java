@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        new AlertDialog.Builder(this)
+       /* new AlertDialog.Builder(this)
                 .setTitle("¡Importante!")
                 .setMessage("Datos de prueba" +
                         "\n\n" +
@@ -49,9 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();//*/
-        // TODO
-        // Verificar el correo y contraseña con la BD
-        // Validar formato del correo
         Toast.makeText(this,"-- WIP Login --",Toast.LENGTH_SHORT).show();
 
         //Llamar verificar usuario en action done de EditText Contrasenna
