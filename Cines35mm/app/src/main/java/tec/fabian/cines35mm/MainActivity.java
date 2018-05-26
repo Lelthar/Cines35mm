@@ -33,7 +33,9 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
     //----------------Inicio Declaracion de variables-----------------
-    String nick,correo,tipo;
+    public String nick;
+    public String correo;
+    public String tipo;
 
     // Menu desplegable
     private String[] mMenuTitles;
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(bloquear_desbloquear);
                     break;
                 case 4:
-                    fPerfil perfil=fPerfil.newInstance();
+                    fPerfil perfil=fPerfil.newInstance(this.nick, this.correo);
                     ChangeFrag(perfil);
                     break;
                 case 5:
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(favoritas);
                     break;
                 case 4:
-                    fPerfil perfil=fPerfil.newInstance();
+                    fPerfil perfil=fPerfil.newInstance(this.nick, this.correo);
                     ChangeFrag(perfil);
                     break;
                 case 5:

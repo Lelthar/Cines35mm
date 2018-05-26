@@ -43,6 +43,7 @@ public class fRecomendaciones extends Fragment {
 
         //TODO metodo para calcular recomendaciones
         //TODO mostrar recomendaciones
+
         return rootView;
     }
 
