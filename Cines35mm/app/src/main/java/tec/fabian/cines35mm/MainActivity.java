@@ -155,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(bloquear_desbloquear);
                     break;
                 case 4:
-                    Toast.makeText(this, "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fPerfil perfil=fPerfil.newInstance();
+                    ChangeFrag(perfil);
                     break;
                 case 5:
                     finish();

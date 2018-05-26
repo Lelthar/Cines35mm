@@ -26,12 +26,14 @@
         android:id="@+id/btnAgregarPortada"
         android:layout_width="333dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="Agregar Portada"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtNombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPortada" />
@@ -40,9 +42,9 @@
         android:id="@+id/txtNombre"
         android:layout_width="333dp"
         android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Nombre"
@@ -51,17 +53,17 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtDirector"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAgregarPortada" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txtDirector"
         android:layout_width="333dp"
         android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Director"
@@ -70,17 +72,17 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtGenero"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txtGenero"
         android:layout_width="333dp"
         android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Género"
@@ -89,17 +91,17 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtAnnoEstreno"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDirector" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txtAnnoEstreno"
         android:layout_width="333dp"
         android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Año de Estreno"
@@ -108,18 +110,18 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtActoresPrincipales"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtGenero" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txtActoresPrincipales"
         android:layout_width="333dp"
         android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Actores Principales"
@@ -128,31 +130,31 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/txtSipnosis"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAnnoEstreno" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txtSipnosis"
         android:layout_width="333dp"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Sipnosis"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
+        android:lines="4"
+        android:scrollbars="vertical"
         android:shadowColor="#FFFFFF"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btnAgregarPelicula"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtActoresPrincipales" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnAgregarPelicula"
@@ -162,12 +164,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="#C12B25"
-        android:onClick="onClickedAddMovie"
         android:text="Agregar Película"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

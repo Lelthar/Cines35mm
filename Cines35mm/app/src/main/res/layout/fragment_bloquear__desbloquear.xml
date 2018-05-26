@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="64dp"
+        android:textSize="20dp"
         android:text="Nick:"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +62,9 @@
         android:layout_marginTop="64dp"
         android:text="- Buscar Usuario -"
         android:textColor="#FFF"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toEndOf="@+id/NoModNick"
         app:layout_constraintTop_toBottomOf="@+id/btnBuscarUsuario" />
 
@@ -74,6 +76,7 @@
         android:layout_marginTop="64dp"
         android:text="Correo:"
         android:textColor="#FFF"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NoModNick" />
 
@@ -84,11 +87,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
+        android:textSize="20dp"
         android:text="- Buscar Usuario -"
         android:textColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.122"
-        app:layout_constraintStart_toEndOf="@+id/NoModNick"
+        app:layout_constraintStart_toEndOf="@+id/NoModCorreo"
         app:layout_constraintTop_toBottomOf="@+id/lblNick" />
 
     <Button
