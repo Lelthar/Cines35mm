@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3Client;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
+            @Override
+            public void onComplete(AWSStartupResult awsStartupResult) {
+                Log.d("YourMainActivity", "AWSMobileClient is instantiated and you are connected to AWS!");
+            }
+        }).execute();
 
         Intent i=getIntent();
         nick=i.getExtras().getString("nick");
@@ -188,6 +208,49 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             selectItem(position);
+        }
+    }
+    private void uploadImageS3(){
+        BasicAWSCredentials credentials = new BasicAWSCredentials("", "");
+        AmazonS3Client s3Client = new AmazonS3Client(credentials);
+
+        TransferUtility transferUtility =
+                TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(s3Client)
+                        .build();
+
+        // "jsaS3" will be the folder that contains the file
+                TransferObserver uploadObserver =
+                        transferUtility.upload("folder/" + "nombreImagen",new File(""));
+
+                uploadObserver.setTransferListener(new TransferListener() {
+
+                    @Override
+                    public void onStateChanged(int id, TransferState state) {
+                        if (TransferState.COMPLETED == state) {
+                            // Handle a completed download.
+                        }
+                    }
+
+                    @Override
+                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                        float percentDonef = ((float)bytesCurrent/(float)bytesTotal) * 100;
+                        int percentDone = (int)percentDonef;
+                    }
+
+                    @Override
+                    public void onError(int id, Exception ex) {
+                        // Handle errors
+                    }
+
+                });
+
+        // If your upload does not trigger the onStateChanged method inside your
+        // TransferListener, you can directly check the transfer state as shown here.
+        if (TransferState.COMPLETED == uploadObserver.getState()) {
+            // Handle a completed upload.
         }
     }
 }
