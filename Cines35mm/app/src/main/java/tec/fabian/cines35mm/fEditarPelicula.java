@@ -34,7 +34,7 @@ public class fEditarPelicula extends Fragment {
 
     public static fEditarPelicula newInstance() {
         fEditarPelicula fragment = new fEditarPelicula();
-
+        //TODO recibir id pelicula o datos pelicula
         return fragment;
     }
 
@@ -72,5 +72,9 @@ public class fEditarPelicula extends Fragment {
             }
         });
         return rootView;
+    }
+
+    public void onDetach() {
+        super.onDetach();
     }
 }

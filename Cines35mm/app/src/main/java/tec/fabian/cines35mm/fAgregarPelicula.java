@@ -107,4 +107,8 @@ public class fAgregarPelicula extends Fragment {
         }
     }
 
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

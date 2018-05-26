@@ -174,12 +174,12 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:
-                    Toast.makeText(this, "------ WIP Favoritas ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fFavoritas favoritas = fFavoritas.newInstance();
+                    ChangeFrag(favoritas);
                     break;
                 case 4:
-                    Toast.makeText(this, "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fPerfil perfil=fPerfil.newInstance();
+                    ChangeFrag(perfil);
                     break;
                 case 5:
                     finish();

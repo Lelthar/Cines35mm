@@ -23,7 +23,7 @@ public class fPerfil extends Fragment {
 
     public static fPerfil newInstance() {
         fPerfil fragment = new fPerfil();
-
+        //TODO recibir datos del usuario o el correo para buscar los datos
         return fragment;
     }
 
@@ -34,7 +34,16 @@ public class fPerfil extends Fragment {
         rootView= inflater.inflate(R.layout.fragment_perfil, container, false);
         Toast.makeText(rootView.getContext(), "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
 
+        //TODO crear metodo para recuperar y mostrar informacion del usuario
+        //TODO metodo para editar el nick y el correo (y sus validaciones)
+        //TODO metodo para cambiar contraseña
+
+
         return rootView;
+    }
+
+    public void onDetach() {
+        super.onDetach();
     }
 
 }

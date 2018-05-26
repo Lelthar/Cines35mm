@@ -31,6 +31,8 @@ public class fDisponibles extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_disponibles, container, false);
         Toast.makeText(rootView.getContext(),"-- WIP Disponibles --",Toast.LENGTH_SHORT).show();
 
+        //TODO metodo para mostrar las peliculas disponibles
+        //TODO metodo para buscar peliculas disponibles
         return rootView;
     }
 

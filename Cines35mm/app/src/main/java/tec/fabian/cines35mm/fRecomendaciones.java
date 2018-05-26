@@ -26,6 +26,7 @@ public class fRecomendaciones extends Fragment {
 
     public static fRecomendaciones newInstance(String param1, String param2) {
         fRecomendaciones fragment = new fRecomendaciones();
+        //TODO recibir correo para buscar las favoritas y calcular recomendaciones
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -40,6 +41,8 @@ public class fRecomendaciones extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_recomendaciones, container, false);
         Toast.makeText(rootView.getContext(),"-- WIP Recomendaciones --",Toast.LENGTH_SHORT).show();
 
+        //TODO metodo para calcular recomendaciones
+        //TODO mostrar recomendaciones
         return rootView;
     }
 

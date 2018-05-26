@@ -36,4 +36,7 @@ public class fBloquear_Desbloquear extends Fragment {
         return rootView;
     }
 
+    public void onDetach() {
+        super.onDetach();
+    }
 }
