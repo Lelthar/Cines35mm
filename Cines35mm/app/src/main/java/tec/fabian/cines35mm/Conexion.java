@@ -3,9 +3,11 @@ package tec.fabian.cines35mm;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,11 +24,13 @@ public class Conexion extends AsyncTask<String, Void, String>{
                 conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 //conn.setRequestProperty("Content-Transfer-Encoding","binary");
                 conn.setRequestProperty("Accept","application/json");
+                //conn.setRequestProperty("Accept-Charset", "UTF-8");
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
-                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                os.writeBytes(strings[2]);
+                //DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                BufferedWriter os = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
+                os.write(strings[2]);
 
                 os.flush();
                 os.close();

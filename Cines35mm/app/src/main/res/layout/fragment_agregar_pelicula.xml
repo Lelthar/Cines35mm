@@ -162,6 +162,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="#C12B25"
+        android:onClick="onClickedAddMovie"
         android:text="Agregar Película"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
