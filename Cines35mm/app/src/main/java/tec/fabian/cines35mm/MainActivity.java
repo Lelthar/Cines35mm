@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(agregarPelicula);
                     break;
                 case 3:
-                    Toast.makeText(this, "------ WIP Bloquear/Desbloquear ------", Toast.LENGTH_SHORT).show();
-                    //ChangeFrag(new Mensajes());
+                    fBloquear_Desbloquear bloquear_desbloquear=fBloquear_Desbloquear.newInstance();
+                    ChangeFrag(bloquear_desbloquear);
                     break;
                 case 4:
                     Toast.makeText(this, "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
