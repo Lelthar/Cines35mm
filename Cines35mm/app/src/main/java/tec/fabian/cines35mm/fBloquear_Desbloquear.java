@@ -144,7 +144,7 @@ public class fBloquear_Desbloquear extends Fragment {
                     boton_desbloquear.setVisibility(View.VISIBLE);
                 }
                 texto_nickname.setText(nickname);
-                texto_nickname.setText(jsonUsuario.getString("correo"));
+                texto_correo.setText(jsonUsuario.getString("correo"));
             }
         }else{
             //Mostrar mensaje de que el usuario no existe
