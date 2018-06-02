@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -17,6 +18,7 @@ public class fEditarPelicula extends Fragment {
 
     // Variables
     private View rootView;
+    private ImageView portada_pelicula;
     private EditText nombre_pelicula;
     private EditText director_pelicula;
     private EditText generos_pelicula;
@@ -46,6 +48,7 @@ public class fEditarPelicula extends Fragment {
 
         Toast.makeText(rootView.getContext(),"-- WIP Agregar Pelicula --",Toast.LENGTH_SHORT).show();
         //Se inicializan las variables para los objetos de la interfaz
+        portada_pelicula=rootView.findViewById(R.id.imgPortada);
         nombre_pelicula = rootView.findViewById(R.id.txtNombre);
         director_pelicula = rootView.findViewById(R.id.txtDirector);
         generos_pelicula = rootView.findViewById(R.id.txtGenero);
@@ -73,6 +76,8 @@ public class fEditarPelicula extends Fragment {
         });
         return rootView;
     }
+
+
 
     public void onDetach() {
         super.onDetach();
