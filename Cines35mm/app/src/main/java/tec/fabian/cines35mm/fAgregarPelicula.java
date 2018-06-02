@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +30,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3Client;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +68,7 @@ public class fAgregarPelicula extends Fragment {
 
     private static final int SELECT_PICTURE=3513;
     private static final int PERMISSION_REQUEST_CODE=5468;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     public fAgregarPelicula() {
         // Required empty public constructor
@@ -108,6 +120,15 @@ public class fAgregarPelicula extends Fragment {
             }
         });
 
+        AWSMobileClient.getInstance().initialize(rootView.getContext(), new AWSStartupHandler() {
+            @Override
+            public void onComplete(AWSStartupResult awsStartupResult) {
+                //Log.d("YourMainActivity", "AWSMobileClient is instantiated and you are connected to AWS!");
+            }
+        }).execute();
+
+        checkPermisosReadStorage(rootView.getContext());
+
         return rootView;
     }
 
@@ -125,7 +146,8 @@ public class fAgregarPelicula extends Fragment {
         //Revisa que los Edittext no estén vacios
         if(!strNombrePelicula.isEmpty() && !strDirectorPelicula.isEmpty() && !strGenerosPelicula.isEmpty() && !strAnhoEstreno.isEmpty() && !strActoresPrincipales.isEmpty() && !strSinopsis.isEmpty()){
             conexion = new Conexion();
-
+            uploadImageS3(strNombrePelicula.replaceAll("\\s",""));
+            String urlPelicula = "https://s3.amazonaws.com/cinesmmapp-userfiles-mobilehub-1517008059/uploads/"+strNombrePelicula.replaceAll("\\s","")+".jpg";
             //Agrega los parametros al objeto JSON
             JSONObject json_parametros = new JSONObject();
             json_parametros.put("nombre",strNombrePelicula);
@@ -134,11 +156,11 @@ public class fAgregarPelicula extends Fragment {
             json_parametros.put("anho_estreno",strAnhoEstreno);
             json_parametros.put("actores_principales",strActoresPrincipales);
             json_parametros.put("sinopsis",strSinopsis);
-            json_parametros.put("url_imagen","insertar url aqui");
+            json_parametros.put("url_imagen",urlPelicula);
             String  result = conexion.execute("https://cines35mm.herokuapp.com/movies","POST",json_parametros.toString()).get();
 
             if(result.equals("Created")) {
-                Toast.makeText(rootView.getContext(), "Se creó exitosamente la cuenta.", Toast.LENGTH_LONG).show();
+                Toast.makeText(rootView.getContext(), "Se creó exitosamente la pelicula.", Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(rootView.getContext(), "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
                 Toast.makeText(rootView.getContext(), json_parametros.toString(), Toast.LENGTH_LONG).show();
@@ -150,6 +172,7 @@ public class fAgregarPelicula extends Fragment {
 
     // ------------------ Elegir imagen para mostrar portada ----------
     public void MostrarPortada(){
+        checkPermisosReadStorage(this.getContext());
         if(Build.VERSION.SDK_INT >=23) {
             if (checkPermission()){
                 Intent intent = new Intent();
@@ -177,13 +200,13 @@ public class fAgregarPelicula extends Fragment {
                 Uri filePath = data.getData();
                 if (null != filePath) {
                     try {
-                        ContentResolver contentResolver=getActivity().getApplicationContext().getContentResolver();
-
+                        /*ContentResolver contentResolver=getActivity().getApplicationContext().getContentResolver();
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath);
-                        portada_pelicula.setImageBitmap(bitmap);
+                        portada_pelicula.setImageBitmap(bitmap);*/
 
-                        path_portada=filePath.getPath();
-
+                        portada_pelicula.setImageURI(filePath);
+                        path_portada =  filePath.getPath();
+                        Log.d("PATH", filePath.getPath());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -266,6 +289,88 @@ public class fAgregarPelicula extends Fragment {
 
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void uploadImageS3(String nombreImagen){
+	//Agregar el keypublico y local cuando se vaya a correr, borrarlo cuando se vaya a subir a github
+        BasicAWSCredentials credentials = new BasicAWSCredentials("", "");
+        AmazonS3Client s3Client = new AmazonS3Client(credentials);
+
+        TransferUtility transferUtility =
+                TransferUtility.builder()
+                        .context(rootView.getContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(s3Client)
+                        .build();
+
+        // "jsaS3" will be the folder that contains the file
+        TransferObserver uploadObserver =
+                transferUtility.upload("uploads/" + nombreImagen+".jpg",new File(path_portada));
+
+        uploadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+                    // Handle a completed download.
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                float percentDonef = ((float)bytesCurrent/(float)bytesTotal) * 100;
+                int percentDone = (int)percentDonef;
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                // Handle errors
+            }
+
+        });
+
+        // If your upload does not trigger the onStateChanged method inside your
+        // TransferListener, you can directly check the transfer state as shown here.
+        if (TransferState.COMPLETED == uploadObserver.getState()) {
+            // Handle a completed upload.
+        }
+    }
+
+    public boolean checkPermisosReadStorage(final Context context){
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    ventanaAutorizacionReadStorage("External storage", context,Manifest.permission.READ_EXTERNAL_STORAGE);
+
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+    }
+    public void ventanaAutorizacionReadStorage(final String msg, final Context context, final String permission) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setCancelable(true);
+        alertBuilder.setTitle("Permission necessary");
+        alertBuilder.setMessage(msg + " permission is necessary");
+        alertBuilder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions((Activity) context,
+                                new String[] { permission },
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 
 }

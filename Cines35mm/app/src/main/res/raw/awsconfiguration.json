@@ -12,6 +12,12 @@
   "IdentityManager": {
     "Default": {}
   },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "cinesmmapp-userfiles-mobilehub-1517008059",
+      "Region": "us-east-1"
+    }
+  },
   "PinpointAnalytics": {
     "Default": {
       "AppId": "c7743297af6346788859f7dfe3fa6a1b",
@@ -20,6 +26,12 @@
   },
   "PinpointTargeting": {
     "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "UserFileManager": {
+    "Default": {
+      "Bucket": "cinesmmapp-userfiles-mobilehub-1517008059",
       "Region": "us-east-1"
     }
   }
