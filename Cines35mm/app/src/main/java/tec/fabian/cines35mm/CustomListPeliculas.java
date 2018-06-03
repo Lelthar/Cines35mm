@@ -1,6 +1,7 @@
 package tec.fabian.cines35mm;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,23 +15,28 @@ import static java.security.AccessController.getContext;
 
 public class CustomListPeliculas extends ArrayAdapter {
     private final Activity context;
-    String[] Nombre,Portada,Genero,Director,Calificacion;
+    String[] Nombre,Portada,Genero,Director, Anno, Sipnosis, Actores, Calificacion;
     int[] NumeroPelicula;
 
     ImageView ImViewPortada;
+    String Nick;
 
     int posicion;
 
 
     public CustomListPeliculas(Activity context,
-                     String[] Nombre,String[] Portada,String[] Genero,String[] Director,String[] Calificacion) {
+                     String[] Nombre,String[] Portada,String[] Genero,String[] Director, String[] Anno, String[] Sipnosis, String[] Actores, String[] Calificacion, String Nick) {
         super(context, R.layout.item_lista_pelicula, Nombre);
         this.context = context;
         this.Nombre = Nombre;
         this.Portada = Portada;
         this.Genero = Genero;
         this.Director = Director;
+        this.Anno = Anno;
+        this.Sipnosis = Sipnosis;
+        this.Actores = Actores;
         this.Calificacion = Calificacion;
+        this.Nick = Nick;
     }
 
 
@@ -60,6 +66,52 @@ public class CustomListPeliculas extends ArrayAdapter {
             //ImViewPortada.;
         }
 
+        //Abrir información de pelicula y comentarios
+        lbNombre.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                posicion=(Integer) view.getTag();
+                Abrir_Info();
+            }
+        });//*/
+
+        lbGenero.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                posicion=(Integer) view.getTag();
+                Abrir_Info();
+            }
+        });//*/
+        lbDirector.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                posicion=(Integer) view.getTag();
+                Abrir_Info();
+            }
+        });//*/
+        ImViewPortada.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                posicion=(Integer) view.getTag();
+                Abrir_Info();
+            }
+        });//*/
+
         return rowView;
     }//*/
+
+    private void Abrir_Info(){
+        Intent i = new Intent(context, Tabs_InfoPeli_Comentarios.class);
+        i.putExtra("Nick",Nick);
+        i.putExtra("Nombre",Nombre[posicion]);
+        i.putExtra("Genero", Genero[posicion]);
+        i.putExtra("Director", Director[posicion]);
+        i.putExtra("Anno", Anno[posicion]);
+        i.putExtra("Sipnosis", Sipnosis[posicion]);
+        i.putExtra("Actores", Actores[posicion]);
+        i.putExtra("Portada", Portada[posicion]);
+        getContext().startActivity(i);
+    }
+
+
 }

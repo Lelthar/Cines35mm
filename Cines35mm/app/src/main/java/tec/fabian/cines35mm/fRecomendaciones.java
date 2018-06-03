@@ -1,12 +1,15 @@
 package tec.fabian.cines35mm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,16 +21,17 @@ public class fRecomendaciones extends Fragment {
     private TextView NoPeliculas;
     ListView ListaPeliculas;
 
+    static String Nick;
+
     CustomListPeliculas adapter;
 
     public fRecomendaciones() {
         // Required empty public constructor
     }
 
-    public static fRecomendaciones newInstance(String param1, String param2) {
+    public static fRecomendaciones newInstance(String nick, String correo) {
         fRecomendaciones fragment = new fRecomendaciones();
-        //TODO recibir correo para buscar las favoritas y calcular recomendaciones
-
+        Nick=nick;
         return fragment;
     }
 
@@ -58,13 +62,17 @@ public class fRecomendaciones extends Fragment {
             String[] Nombre={"Prueba 1","Nombre prueba 2"};
             String[] Genero={"Prueba 1 G","Genero prueba 2"};
             String[] Director={"Prueba 1 D","Director prueba 2"};
+            String[] Anno={"1992","2065"};
+            String[] Actores={"APrueba01, APrueba02, APrueba03","Juanito, Panchito, Eduardo, Fulano, Fulana, X, Raimundo, Ytodoelmundo"};
+            String[] Sipnosis={"Sipnosis de la primera prueba, aqui va a estar una descripcion relativamente grande","Sipnosis prueba 2"};
             String[] Calificacion={null,null};
             String[] ImgPortada={null,null};
 
-            adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Calificacion);
+            adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick);
 
             //TODO
             ListaPeliculas.setAdapter(adapter);
+
         }
     }
     @Override
