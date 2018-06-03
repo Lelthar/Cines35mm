@@ -18,6 +18,8 @@ public class fRecomendaciones extends Fragment {
     private TextView NoPeliculas;
     ListView ListaPeliculas;
 
+    CustomListPeliculas adapter;
+
     public fRecomendaciones() {
         // Required empty public constructor
     }
@@ -40,22 +42,29 @@ public class fRecomendaciones extends Fragment {
         ListaPeliculas=(ListView) rootView.findViewById(R.id.listRecomendaciones);
 
         //TODO metodo para calcular recomendaciones
-        //TODO mostrar recomendaciones
+        Actualizar_Peliculas();
 
         return rootView;
     }
 
     private void Actualizar_Peliculas() {
-        if (true) { //TODO verificar que existan recomendaciones
+        // TODO Mae Gerald yo metia las varas de la BD en una variable tipo cursor entonces asi verificaba esto, y mas adelante definia el tamaño de los arrays de Nombre, Genero... con .getCount() del cursor
+        if (!true) { //TODO verificar que existan recomendaciones (Si la BD devuelve peliculas)
             NoPeliculas.setVisibility(View.VISIBLE);
-            return;
         } else {
             NoPeliculas.setVisibility(View.INVISIBLE);
 
-            CustomListPeliculas adapter = new CustomListPeliculas();//TODO
+            //TODO cambiar este Custom List por los datos recuperados de la BD
+            String[] Nombre={"Prueba 1","Nombre prueba 2"};
+            String[] Genero={"Prueba 1 G","Genero prueba 2"};
+            String[] Director={"Prueba 1 D","Director prueba 2"};
+            String[] Calificacion={null,null};
+            String[] ImgPortada={null,null};
+
+            adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Calificacion);
 
             //TODO
-            //ListaPeliculas.setAdapter(adapter);
+            ListaPeliculas.setAdapter(adapter);
         }
     }
     @Override

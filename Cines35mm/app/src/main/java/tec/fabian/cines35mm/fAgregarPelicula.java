@@ -256,37 +256,6 @@ public class fAgregarPelicula extends Fragment {
         }
     }
 
-
-    public static Bitmap decodeSampledBitmapFromFile(String path,
-                                                     int reqWidth, int reqHeight) {
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        //Query bitmap without allocating memory
-        options.inJustDecodeBounds = true;
-        //decode file from path
-        BitmapFactory.decodeFile(path, options);
-        // Calculate inSampleSize
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        //decode according to configuration or according best match
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        int inSampleSize = 1;
-        if (height > reqHeight) {
-            inSampleSize = Math.round((float)height / (float)reqHeight);
-        }
-        int expectedWidth = width / inSampleSize;
-        if (expectedWidth > reqWidth) {
-            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
-            inSampleSize = Math.round((float)width / (float)reqWidth);
-        }
-        //if value is greater than 1,sub sample the original image
-        options.inSampleSize = inSampleSize;
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(path, options);
-    }
-
     public void onDetach() {
         super.onDetach();
     }
