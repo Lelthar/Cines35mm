@@ -22,7 +22,7 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
     String Nick,tipoUsuario;
-    String Nombre,Genero, Director,Anno,Sipnosis,Actores,Portada;
+    String Nombre,Genero, Director,Anno,Sipnosis,Actores,Portada,Calificacion;
     private String id_usuario;
     private String id_pelicula;
     private Conexion conexion;
@@ -49,6 +49,7 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         Actores = i.getExtras().getString("Actores");
         Portada = i.getExtras().getString("Portada");
         tipoUsuario=i.getExtras().getString("tipoUsuario");
+        Calificacion=i.getExtras().getString("Calificacion");
 
         Bundle args1 = new Bundle();
         args1.putString("id_usuario", id_usuario);
@@ -63,6 +64,7 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         args2.putString("Sipnosis", Sipnosis);
         args2.putString("Actores", Actores);
         args2.putString("Portada", Portada);
+        args2.putString("Calificacion", Calificacion);
 
         //Poner de título
         actionBar.setTitle(Nombre);
@@ -102,13 +104,21 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
                 return true;
             }
             case R.id.agregarCalificacion: {
-                CharSequence calificaciones[] = new CharSequence[]{"1", "2", "3", "4", "5"};
+                final CharSequence calificaciones[] = new CharSequence[]{"1", "2", "3", "4", "5"};
                 new AlertDialog.Builder(this)
                         .setItems(calificaciones, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // el usuario selecciona calificaciones[which]
-                                //TODO agregar metodo para calificar pelicula (con Nick puede buscar el usuario)
+                                try {
+                                    CalificarPelicula(calificaciones[which]);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         })
                         .show();//*/
@@ -125,6 +135,26 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void CalificarPelicula(CharSequence Calificacion)throws JSONException, ExecutionException, InterruptedException {
+        int calificacion=Integer.parseInt(Calificacion.toString());
+
+        Conexion conexion = new Conexion();
+
+        JSONObject json_parametros = new JSONObject();
+        json_parametros.put("user_id", id_usuario);
+        json_parametros.put("calificacion", calificacion);
+        json_parametros.put("movie_id", id_pelicula);
+        String result = conexion.execute("https://cines35mm.herokuapp.com/rating_movies", "POST", json_parametros.toString()).get();
+
+        if(result.equals("Created")) {
+            Toast.makeText(this, "Se califico exitosamente la pelicula.", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, json_parametros.toString(), Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void AgregarFavoritos(){
@@ -193,9 +223,8 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
     private void Abrir_Editar_Pelicula(){
         Intent i = new Intent(this, EditarPelicula.class);
-        //TODO habilidar id pelicula y usuario
-        //i.putExtra("id_pelicula",id_pelicula);
-        //i.putExtra("id_usuario", id_usuario);
+        i.putExtra("id_pelicula",id_pelicula);
+        i.putExtra("id_usuario", id_usuario);
         i.putExtra("Nombre",Nombre);
         i.putExtra("Genero", Genero);
         i.putExtra("Director", Director);

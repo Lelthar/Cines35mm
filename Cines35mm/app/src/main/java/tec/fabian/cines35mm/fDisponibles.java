@@ -29,6 +29,7 @@ public class fDisponibles extends Fragment {
     ListView ListaPeliculas;
     TextView NoPeliculasDisponibles;
     JSONArray TodasPeliculas;
+    JSONArray TodasCalificacione;
     EditText Busqueda;
 
     static String Nick,tipoUsuario,id_usuario;

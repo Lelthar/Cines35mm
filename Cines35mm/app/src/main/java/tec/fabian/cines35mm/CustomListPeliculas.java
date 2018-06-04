@@ -114,6 +114,7 @@ public class CustomListPeliculas extends ArrayAdapter {
         i.putExtra("Portada", Portada[posicion]);
         i.putExtra("id_pelicula",id_pelicula[posicion]);
         i.putExtra("id_usuario",id_usuario);
+        i.putExtra("Calificacion",Calificacion[posicion]);
         getContext().startActivity(i);
     }
 }

@@ -42,6 +42,7 @@ public class fInformacionPelicula extends Fragment {
         String Sipnosis=new String();
         String Actores=new String();
         String Portada=new String();
+        String Calificacion=new String();
 
         if (getArguments() != null) {
 
@@ -52,6 +53,7 @@ public class fInformacionPelicula extends Fragment {
             Sipnosis = getArguments().getString("Sipnosis");
             Actores = getArguments().getString("Actores");
             Portada = getArguments().getString("Portada");
+            Calificacion = getArguments().getString("Calificacion");
 
         }
 
@@ -62,6 +64,7 @@ public class fInformacionPelicula extends Fragment {
         TextView lbAnno = rootView.findViewById(R.id.lbAnno);
         TextView lbActores = rootView.findViewById(R.id.lbActores);
         TextView lbSipnosis = rootView.findViewById(R.id.lbSipnosis);
+        TextView lbCalificacion = rootView.findViewById(R.id.lbCalificacion);
 
         if(!TextUtils.isEmpty(Portada)){
             Picasso.with(this.getContext()).load(Portada).into(imgPortada);
@@ -73,6 +76,7 @@ public class fInformacionPelicula extends Fragment {
         lbAnno.setText("Año: "+Anno);
         lbActores.setText("Actores: "+Actores);
         lbSipnosis.setText("Sipnosis: "+Sipnosis);
+        lbCalificacion.setText("Calificación: "+Calificacion);
 
 
         return rootView;
