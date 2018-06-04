@@ -1,8 +1,8 @@
 package tec.fabian.cines35mm;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,8 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +29,7 @@ public class fDisponibles extends Fragment {
     ListView ListaPeliculas;
     TextView NoPeliculasDisponibles;
     JSONArray TodasPeliculas;
+    EditText Busqueda;
 
     static String Nick;
 
@@ -51,7 +50,9 @@ public class fDisponibles extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_disponibles, container, false);
         NoPeliculasDisponibles=rootView.findViewById(R.id.labelNoDisponibles);
         ListaPeliculas = rootView.findViewById(R.id.listDisponibles);
-        final EditText Busqueda=rootView.findViewById(R.id.txtBusqueda);
+        Busqueda=rootView.findViewById(R.id.txtBusqueda);
+
+
         Busqueda.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {            }
@@ -61,13 +62,29 @@ public class fDisponibles extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Actualizar_Peliculas(Busqueda.getText().toString().trim());
+                handler.removeMessages(TRIGGER_SERACH);
+                handler.sendEmptyMessageDelayed(TRIGGER_SERACH, SEARCH_TRIGGER_DELAY_IN_MS);
             }
         });
         Actualizar_Datos();
         Actualizar_Peliculas("Todo");
         return rootView;
     }
+
+    // ----- Delay para la busqueda -----
+    private final int TRIGGER_SERACH = 1;
+    // Where did 1000 come from? It's arbitrary, since I can't find average android typing speed.
+    private final long SEARCH_TRIGGER_DELAY_IN_MS = 250;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == TRIGGER_SERACH) {
+                Actualizar_Peliculas(Busqueda.getText().toString().trim());
+            }
+        }
+    };
+
 
     @Override
     public void onDetach() {
@@ -157,7 +174,9 @@ public class fDisponibles extends Fragment {
 
         for (int i = 0; i < datos.length(); i++) {
             elemento = datos.getJSONObject(i);
-            if(elemento.getString("nombre").toLowerCase().contains(Buscar.toLowerCase()))
+            if(elemento.getString("nombre").toLowerCase().contains(Buscar.toLowerCase())
+                    || elemento.getString("genero").toLowerCase().contains(Buscar.toLowerCase())
+                    || elemento.getString("director").toLowerCase().contains(Buscar.toLowerCase()))
                 datosFiltrados.put(elemento);
         }
 
