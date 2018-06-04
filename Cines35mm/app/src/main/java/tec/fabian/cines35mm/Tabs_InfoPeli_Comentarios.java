@@ -83,26 +83,30 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.agregarFavoritas) {
-            //TODO agregar metodo para agregar a favoritas (con Nick puede buscar el usuario)
-            return true;
+        switch (id) {
+            case R.id.agregarFavoritas: {
+                //TODO agregar metodo para agregar a favoritas (con Nick puede buscar el usuario)
+                return true;
+            }
+            case R.id.agregarCalificacion: {
+                CharSequence calificaciones[] = new CharSequence[]{"1", "2", "3", "4", "5"};
+                new AlertDialog.Builder(this)
+                        .setItems(calificaciones, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // el usuario selecciona calificaciones[which]
+                                //TODO agregar metodo para calificar pelicula (con Nick puede buscar el usuario)
+                            }
+                        })
+                        .show();//*/
+                return true;
+            }
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        else if(id == R.id.agregarCalificacion){
-            CharSequence calificaciones[] = new CharSequence[] {"1", "2", "3", "4", "5"};
-            new AlertDialog.Builder(this)
-                    .setItems(calificaciones, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // el usuario selecciona calificaciones[which]
-                            //TODO agregar metodo para calificar pelicula (con Nick puede buscar el usuario)
-                        }})
-                    .show();//*/
-            return true;
-        }
-        else if(id==android.R.id.home){
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

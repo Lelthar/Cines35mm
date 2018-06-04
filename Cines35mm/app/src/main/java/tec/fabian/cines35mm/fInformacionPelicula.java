@@ -83,6 +83,11 @@ public class fInformacionPelicula extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         String tipoUsuario=null;
         if (getArguments() != null) {
             tipoUsuario = getArguments().getString("tipoUsuario");
@@ -90,12 +95,10 @@ public class fInformacionPelicula extends Fragment {
 
         if(tipoUsuario!=null)
             if (tipoUsuario.equals("Cliente"))
-                setHasOptionsMenu(true);
-    }
+                inflater.inflate(R.menu.menu_opciones, menu);
+            else
+                inflater.inflate(R.menu.menu_opciones_administrador, menu);
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_opciones, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

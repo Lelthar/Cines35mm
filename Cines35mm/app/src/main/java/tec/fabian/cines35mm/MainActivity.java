@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             setTitle("Recomendaciones");
-            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo);
+            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo,id_usuario);
             ChangeFrag(recomendaciones);
         }
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(disponibles);
                     break;
                 case 2:
-                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo);
+                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo,id_usuario);
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:

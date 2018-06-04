@@ -44,7 +44,6 @@ public class fPerfil extends Fragment {
 
     public static fPerfil newInstance(String nick, String correo) {
         fPerfil fragment = new fPerfil();
-        //TODO recibir datos del usuario o el correo para buscar los datos
         Bundle args = new Bundle();
         args.putString(ARG_NICK, nick);
         args.putString(ARG_CORREO, correo);
