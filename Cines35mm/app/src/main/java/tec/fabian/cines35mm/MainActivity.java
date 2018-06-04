@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         if(tipo.equals("Administrador")) {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance();
+                    fDisponibles disponibles = fDisponibles.newInstance(nick);
                     ChangeFrag(disponibles);
                     break;
                 case 2:
@@ -170,15 +170,15 @@ public class MainActivity extends AppCompatActivity {
         }else {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance();
+                    fDisponibles disponibles = fDisponibles.newInstance(nick);
                     ChangeFrag(disponibles);
                     break;
                 case 2:
-                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick);
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:
-                    fFavoritas favoritas = fFavoritas.newInstance(this.id_usuario);
+                    fFavoritas favoritas = fFavoritas.newInstance(nick);
                     ChangeFrag(favoritas);
                     break;
                 case 4:

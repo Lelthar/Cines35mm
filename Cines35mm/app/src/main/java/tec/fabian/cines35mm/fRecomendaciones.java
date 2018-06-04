@@ -29,7 +29,7 @@ public class fRecomendaciones extends Fragment {
         // Required empty public constructor
     }
 
-    public static fRecomendaciones newInstance(String nick, String correo) {
+    public static fRecomendaciones newInstance(String nick) {
         fRecomendaciones fragment = new fRecomendaciones();
         Nick=nick;
         return fragment;
