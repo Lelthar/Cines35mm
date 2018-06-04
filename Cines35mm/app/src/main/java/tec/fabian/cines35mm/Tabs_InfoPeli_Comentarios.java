@@ -1,18 +1,21 @@
 package tec.fabian.cines35mm;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
+    String Nick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,7 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
         //Se reciben las variables necesarias
         Intent i=getIntent();
-        String Nick = i.getExtras().getString("Nick");
+        Nick = i.getExtras().getString("Nick");
         String Nombre = i.getExtras().getString("Nombre");
         String Genero = i.getExtras().getString("Genero");
         String Director = i.getExtras().getString("Director");
@@ -73,8 +76,32 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        finish();
-        return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.agregarFavoritas) {
+            //TODO agregar metodo para agregar a favoritas (con Nick puede buscar el usuario)
+            Toast.makeText(this,"WIP",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if(id == R.id.agregarCalificacion){
+            CharSequence calificaciones[] = new CharSequence[] {"1", "2", "3", "4", "5"};
+            new AlertDialog.Builder(this)
+                    .setTitle("Elija la calificación")
+                    .setItems(calificaciones, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // el usuario selecciona calificaciones[which]
+                            //TODO agregar metodo para calificar pelicula (con Nick puede buscar el usuario)
+                        }})
+                    .show();//*/
+            Toast.makeText(this,"WIP",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if(id==android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

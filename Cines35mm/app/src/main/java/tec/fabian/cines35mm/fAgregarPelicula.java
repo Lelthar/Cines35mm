@@ -4,20 +4,13 @@ package tec.fabian.cines35mm;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -45,7 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
@@ -141,8 +133,6 @@ public class fAgregarPelicula extends Fragment {
         String strActoresPrincipales = actores_principales.getText().toString();
         String strSinopsis = sinopsis.getText().toString();
 
-        //TODO Utilizar path_portada para la imagen
-
         //Revisa que los Edittext no estén vacios
         if(!strNombrePelicula.isEmpty() && !strDirectorPelicula.isEmpty() && !strGenerosPelicula.isEmpty() && !strAnhoEstreno.isEmpty() && !strActoresPrincipales.isEmpty() && !strSinopsis.isEmpty()){
             conexion = new Conexion();
@@ -200,10 +190,6 @@ public class fAgregarPelicula extends Fragment {
                 Uri filePath = data.getData();
                 if (null != filePath) {
                     try {
-                        /*ContentResolver contentResolver=getActivity().getApplicationContext().getContentResolver();
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath);
-                        portada_pelicula.setImageBitmap(bitmap);*/
-
                         portada_pelicula.setImageURI(filePath);
                         path_portada =  filePath.getPath();
                         Log.d("PATH", filePath.getPath());

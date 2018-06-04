@@ -1,14 +1,22 @@
 package tec.fabian.cines35mm;
 
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +27,7 @@ import com.squareup.picasso.Picasso;
 public class fInformacionPelicula extends Fragment {
     // Variables
     private View rootView;
+    String Nick;
 
     public fInformacionPelicula() {
         // Required empty public constructor
@@ -32,7 +41,6 @@ public class fInformacionPelicula extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_informacion_pelicula, container, false);
 
 
-        String Nick=new String();
         String Nombre=new String();
         String Genero=new String();
         String Director=new String();
@@ -42,7 +50,6 @@ public class fInformacionPelicula extends Fragment {
         String Portada=new String();
 
         if (getArguments() != null) {
-            Nick = getArguments().getString("Nick");
             Nombre = getArguments().getString("Nombre");
             Genero = getArguments().getString("Genero");
             Director = getArguments().getString("Director");
@@ -74,6 +81,20 @@ public class fInformacionPelicula extends Fragment {
 
 
         return rootView;
+    }
+
+
+    //------- Agregar menu de opciones --------
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_opciones, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }
