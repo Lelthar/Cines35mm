@@ -58,7 +58,15 @@ public class fComentarios extends Fragment {
         btnAgregarComentario.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                AgregarComentario();
+                try {
+                    AgregarComentario();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -149,8 +157,28 @@ public class fComentarios extends Fragment {
         }
     }
 
-    private void AgregarComentario(){
-        //TODO agregar comentario con las variables Nick, NombrePelicula y Comentario
-        Toast.makeText(getContext(),"Agregar comentario",Toast.LENGTH_SHORT).show();
+    private void AgregarComentario() throws JSONException, ExecutionException, InterruptedException {
+        EditText comentario = rootView.findViewById(R.id.txtComentario);
+        String strComentario = comentario.getText().toString();
+
+        if (!strComentario.isEmpty()) {
+            Conexion conexion = new Conexion();
+
+            JSONObject json_parametros = new JSONObject();
+            json_parametros.put("user", id_usuario);
+            json_parametros.put("comentario", strComentario);
+            json_parametros.put("movie", id_pelicula);
+            String result = conexion.execute("https://cines35mm.herokuapp.com/commentaries", "POST", json_parametros.toString()).get();
+
+            if(result.equals("Created")) {
+                Toast.makeText(rootView.getContext(), "Se publicó exitosamente el comentario.", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(rootView.getContext(), "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(rootView.getContext(), json_parametros.toString(), Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(rootView.getContext(), "El comentario no puede estar vacío", Toast.LENGTH_LONG).show();
+        }
     }
 }
