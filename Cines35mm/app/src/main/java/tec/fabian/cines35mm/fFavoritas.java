@@ -44,8 +44,8 @@ public class fFavoritas extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_recomendaciones, container, false);
         Toast.makeText(rootView.getContext(),"-- WIP Favoritas --",Toast.LENGTH_SHORT).show();
 
-        //TextView labelNoFavoritas=(TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
-        //labelNoFavoritas.setText("No se han seleccionado películas favoritas");
+        TextView labelNoFavoritas=(TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
+        labelNoFavoritas.setText("No se han seleccionado películas favoritas");
         listView = rootView.findViewById(R.id.listRecomendaciones);
         id_usuario = this.getArguments().getString(ARG_ID);
         //TODO crear metodo para recuperar peliculas favoritas
@@ -115,8 +115,8 @@ public class fFavoritas extends Fragment {
             //TODO
             if(adapter != null){
                 listView.setAdapter(adapter);
-                //TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
-                //NoPeliculas.setVisibility(View.INVISIBLE);
+                TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
+                NoPeliculas.setVisibility(View.INVISIBLE);
             }else{
                 Toast.makeText(this.getContext(),"ERROR.",Toast.LENGTH_SHORT).show();
             }
