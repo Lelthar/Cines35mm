@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class fFavoritas extends Fragment {
     // Variables
     private View rootView;
-    private static final String ARG_ID = "ID";
+    private static final String ARG_ID_FAV = "ID";
     private String id_usuario;
     private ListView listView;
 
@@ -30,10 +30,13 @@ public class fFavoritas extends Fragment {
         // Required empty public constructor
     }
 
-    public static fFavoritas newInstance(String nick,String TipoUsuario) {
+    public static fFavoritas newInstance(String pIdUsuario) {
         fFavoritas fragment = new fFavoritas();
-        Nick=nick;
-        tipoUsuario=TipoUsuario;
+
+        Bundle args = new Bundle();
+        args.putString(ARG_ID_FAV, pIdUsuario);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -46,7 +49,7 @@ public class fFavoritas extends Fragment {
         TextView labelNoFavoritas=(TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
         labelNoFavoritas.setText("No se han seleccionado películas favoritas");
         listView = rootView.findViewById(R.id.listRecomendaciones);
-        id_usuario = this.getArguments().getString(ARG_ID);
+        id_usuario = this.getArguments().getString(ARG_ID_FAV);
         Actualizar_Peliculas();
         return rootView;
     }
