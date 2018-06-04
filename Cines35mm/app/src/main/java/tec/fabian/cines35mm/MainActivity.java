@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(tipo.equals("Administrador")) {
             setTitle("Películas Disponibles");
-            fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
+            fDisponibles disponibles = fDisponibles.newInstance(nick,tipo,id_usuario);
             ChangeFrag(disponibles);
         }
         else {
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         if(tipo.equals("Administrador")) {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
+                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo,id_usuario);
                     ChangeFrag(disponibles);
                     break;
                 case 2:
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
+                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo,id_usuario);
                     ChangeFrag(disponibles);
                     break;
                 case 2:

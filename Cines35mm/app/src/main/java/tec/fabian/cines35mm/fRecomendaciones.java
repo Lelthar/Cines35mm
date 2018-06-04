@@ -142,6 +142,7 @@ public class fRecomendaciones extends Fragment {
                 List<String> sinopsis = new ArrayList<>();
                 List<String> calificacion = new ArrayList<>();
                 List<String> portadas = new ArrayList<>();
+                List<String> id_pelicula = new ArrayList<>();
 
                 JSONObject elemento;
                 //se agregan ya ordenados por el valor
@@ -156,6 +157,7 @@ public class fRecomendaciones extends Fragment {
                     actores.add(elemento.getString("actores_principales"));
                     sinopsis.add(elemento.getString("sinopsis"));
                     portadas.add(elemento.getString("url_imagen"));
+                    id_pelicula.add(elemento.getString("id"));
                 }
 
                 String[] Nombre = nombres.toArray(new String[0]);
@@ -166,8 +168,9 @@ public class fRecomendaciones extends Fragment {
                 String[] Sipnosis = sinopsis.toArray(new String[0]);
                 String[] Calificacion = {null,null};
                 String[] ImgPortada = portadas.toArray(new String[0]);
+                String[] IdPelicula = id_pelicula.toArray(new String[0]);
 
-                adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario);
+                adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario,ARG_ID,IdPelicula);
 
                 if (adapter==null) {
                     NoPeliculas.setVisibility(View.VISIBLE);

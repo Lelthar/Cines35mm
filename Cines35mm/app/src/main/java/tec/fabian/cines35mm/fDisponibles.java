@@ -31,16 +31,17 @@ public class fDisponibles extends Fragment {
     JSONArray TodasPeliculas;
     EditText Busqueda;
 
-    static String Nick,tipoUsuario;
+    static String Nick,tipoUsuario,id_usuario;
 
     public fDisponibles() {
         // Required empty public constructor
     }
 
-    public static fDisponibles newInstance(String nick,String TipoUsuario) {
+    public static fDisponibles newInstance(String nick,String TipoUsuario, String pIdUsuario) {
         fDisponibles fragment = new fDisponibles();
         Nick=nick;
         tipoUsuario=TipoUsuario;
+        id_usuario = pIdUsuario;
         return fragment;
     }
 
@@ -128,6 +129,7 @@ public class fDisponibles extends Fragment {
                 List<String> sinopsis = new ArrayList<>();
                 List<String> calificacion = new ArrayList<>();
                 List<String> portadas = new ArrayList<>();
+                List<String> id_pelicula_list = new ArrayList<>();
 
                 JSONObject elemento;
                 for (int i = 0; i < datos.length(); i++) {
@@ -140,6 +142,7 @@ public class fDisponibles extends Fragment {
                     actores.add(elemento.getString("actores_principales"));
                     sinopsis.add(elemento.getString("sinopsis"));
                     portadas.add(elemento.getString("url_imagen"));
+                    id_pelicula_list.add(elemento.getString("id"));
                 }
 
                 String[] Nombre = nombres.toArray(new String[0]);
@@ -152,8 +155,9 @@ public class fDisponibles extends Fragment {
                 ;
                 String[] Calificacion = {null, null};
                 String[] ImgPortada = portadas.toArray(new String[0]);
+                String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
 
-                CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick,tipoUsuario);
+                CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick,tipoUsuario,id_usuario,IdPelicula);
 
                 if (adapter != null) {
                     ListaPeliculas.setAdapter(adapter);

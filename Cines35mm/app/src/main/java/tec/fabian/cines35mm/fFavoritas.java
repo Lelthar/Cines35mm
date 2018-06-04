@@ -85,6 +85,7 @@ public class fFavoritas extends Fragment {
             List<String> sinopsis = new ArrayList<>();
             List<String> calificacion = new ArrayList<>();
             List<String> portadas = new ArrayList<>();
+            List<String> id_pelicula_list = new ArrayList<>();
 
             JSONObject elemento;
             for(int i = 0; i < datos.length(); i++){
@@ -97,6 +98,7 @@ public class fFavoritas extends Fragment {
                     actores.add(elemento.getString("actores_principales"));
                     sinopsis.add(elemento.getString("sinopsis"));
                     portadas.add(elemento.getString("url_imagen"));
+                    id_pelicula_list.add(elemento.getString("id"));
                     calificacion.add(null);
                 }
             }
@@ -109,8 +111,9 @@ public class fFavoritas extends Fragment {
             String[] Sipnosis = sinopsis.toArray(new String[0]);
             String[] Calificacion = calificacion.toArray(new String[0]);
             String[] ImgPortada = portadas.toArray(new String[0]);
+            String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
 
-            CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario);
+            CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario,id_usuario,IdPelicula);
 
             if(adapter != null){
                 listView.setAdapter(adapter);

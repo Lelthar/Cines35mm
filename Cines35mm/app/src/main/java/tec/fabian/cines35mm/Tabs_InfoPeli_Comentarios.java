@@ -10,12 +10,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
     String Nick;
-
+    private String id_usuario;
+    private String id_pelicula;
+    private Conexion conexion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +37,8 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         //Se reciben las variables necesarias
         Intent i=getIntent();
         Nick = i.getExtras().getString("Nick");
+        id_pelicula = i.getExtras().getString("id_pelicula");
+        id_usuario = i.getExtras().getString("id_usuario");
         String Nombre = i.getExtras().getString("Nombre");
         String Genero = i.getExtras().getString("Genero");
         String Director = i.getExtras().getString("Director");
@@ -63,7 +74,6 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
                 fComentarios.class, args1);
 
 
-
         //Cambiar de color los tabs
         mTabHost.getTabWidget().setBackgroundColor(Color.BLACK);
         mTabHost.getTabWidget().setDividerDrawable(R.mipmap.divider);
@@ -86,6 +96,47 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         switch (id) {
             case R.id.agregarFavoritas: {
                 //TODO agregar metodo para agregar a favoritas (con Nick puede buscar el usuario)
+                //Datos de peliculas favoritas
+
+                conexion = new Conexion();
+                try {
+                    String result_fav = conexion.execute("https://cines35mm.herokuapp.com/favorite_movies.json","GET").get();
+                    JSONArray datos_favoritos = new JSONArray(result_fav);
+                    if(esFavorito(datos_favoritos)){
+                        String id_consulta = getIdMovie(datos_favoritos);
+                        Conexion modificar_favoritos = new Conexion();
+                        String resultado = modificar_favoritos.execute("https://cines35mm.herokuapp.com/favorite_movies/"+id_consulta,"DELETE").get();
+
+                        if(resultado.equals("OK")) {
+                            Toast.makeText(this, "Se eliminó la pelicula de la lista de favoritos.", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(this, "Ocurrió un error inesperado."+resultado.toString(), Toast.LENGTH_LONG).show();
+
+                        }
+                    }else{
+                        Conexion modificar_favoritos = new Conexion();
+                        JSONObject json_parametros = new JSONObject();
+                        json_parametros.put("user_id",id_usuario);
+                        json_parametros.put("movie_id",id_pelicula);
+
+                        String  result_consulta = modificar_favoritos.execute("https://cines35mm.herokuapp.com/favorite_movies","POST",json_parametros.toString()).get();
+
+                        if(result_consulta.equals("Created")) {
+                            Toast.makeText(this, "Se agregó exitosamente la pelicula a los favoritos.", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(this, "Ocurrió un error inesperado."+result_consulta.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, json_parametros.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 return true;
             }
             case R.id.agregarCalificacion: {
@@ -108,5 +159,27 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean esFavorito(JSONArray jsonArreglo) throws JSONException {
+        for(int i = 0; i < jsonArreglo.length(); i++){
+            JSONObject elemento = jsonArreglo.getJSONObject(i);
+            if(elemento.getString("user_id").equals(id_usuario) &&elemento.getString("movie_id").equals(id_pelicula)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getIdMovie(JSONArray jsonArreglo) throws JSONException {
+        String id_movie = "0";
+        for(int i = 0; i < jsonArreglo.length(); i++){
+            JSONObject elemento = jsonArreglo.getJSONObject(i);
+            if(elemento.getString("user_id").equals(id_usuario) &&elemento.getString("movie_id").equals(id_pelicula)){
+                id_movie = elemento.getString("id");
+                return id_movie;
+            }
+        }
+        return id_movie;
     }
 }

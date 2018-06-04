@@ -20,10 +20,11 @@ public class CustomListPeliculas extends ArrayAdapter {
     String Nick,tipoUsuario;
 
     int posicion;
-
+    private String id_usuario;
+    private String[] id_pelicula;
 
     public CustomListPeliculas(Activity context,
-                     String[] Nombre,String[] Portada,String[] Genero,String[] Director, String[] Anno, String[] Sipnosis, String[] Actores, String[] Calificacion, String Nick, String tipoUsuario) {
+                     String[] Nombre,String[] Portada,String[] Genero,String[] Director, String[] Anno, String[] Sipnosis, String[] Actores, String[] Calificacion, String Nick, String tipoUsuario,String pIdUsuario,String[] pIdPelicula) {
         super(context, R.layout.item_lista_pelicula, Nombre);
         this.context = context;
         this.Nombre = Nombre;
@@ -36,6 +37,8 @@ public class CustomListPeliculas extends ArrayAdapter {
         this.Calificacion = Calificacion;
         this.tipoUsuario = tipoUsuario;
         this.Nick = Nick;
+        this.id_usuario = pIdUsuario;
+        this.id_pelicula = pIdPelicula;
     }
 
 
@@ -109,6 +112,8 @@ public class CustomListPeliculas extends ArrayAdapter {
         i.putExtra("Sipnosis", Sipnosis[posicion]);
         i.putExtra("Actores", Actores[posicion]);
         i.putExtra("Portada", Portada[posicion]);
+        i.putExtra("id_pelicula",id_pelicula[posicion]);
+        i.putExtra("id_usuario",id_usuario);
         getContext().startActivity(i);
     }
 
