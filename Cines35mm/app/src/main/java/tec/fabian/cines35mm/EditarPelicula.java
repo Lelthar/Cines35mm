@@ -25,6 +25,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
+
 public class EditarPelicula extends AppCompatActivity {
 
     // Variables
@@ -113,6 +119,15 @@ public class EditarPelicula extends AppCompatActivity {
             public void onClick(View v) {
                 // try {
                 //TODO Actualizar datos pelicula
+                try {
+                    actualizarDatosPelicula();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                /* } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -205,8 +220,60 @@ public class EditarPelicula extends AppCompatActivity {
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return true;
+    }
+
+    public void actualizarDatosPelicula() throws ExecutionException, InterruptedException, JSONException {
+        String nombre = nombre_pelicula.getText().toString();
+        String director = director_pelicula.getText().toString();
+        String genero = genero_pelicula.getText().toString();
+        String anho = anho_estreno.getText().toString();
+        String actores = actores_principales.getText().toString();
+        String sinopsis_pelicula = sinopsis.getText().toString();
+
+        if(!nombre.isEmpty() && !director.isEmpty() && !genero.isEmpty() && !anho.isEmpty() && !actores.isEmpty() && !sinopsis_pelicula.isEmpty()){
+            Conexion conexionPelicula = new Conexion();
+            String datosPelicula = conexionPelicula.execute("https://cines35mm.herokuapp.com/movies.json","GET").get();
+            JSONObject objetoPelicula = obtenerJsonObject(datosPelicula,id_pelicula);
+
+            //JSONObject jsonUser = obtenerJsonObject(jsonResult,nickname);
+            objetoPelicula.remove("nombre");
+            objetoPelicula.put("nombre",nombre);
+            objetoPelicula.remove("director");
+            objetoPelicula.put("director",director);
+            objetoPelicula.remove("genero");
+            objetoPelicula.put("genero",genero);
+            objetoPelicula.remove("director");
+            objetoPelicula.put("actores_principales",actores);
+            objetoPelicula.remove("sinopsis");
+            objetoPelicula.put("sinopsis",sinopsis_pelicula);
+
+
+            conexion = new Conexion();
+
+            String  result = conexion.execute("https://cines35mm.herokuapp.com/movies/"+id_pelicula,"PATCH",objetoPelicula.toString()).get();
+
+            if(result.equals("OK")) {
+                Toast.makeText(this, "Se modificó exitosamente los datos de la pelicula.", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this, "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this, "Ocurrió un error inesperado.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private JSONObject obtenerJsonObject(String jsonDatos, String pIdPelicula) throws JSONException {
+        JSONObject elemento = null;
+        JSONArray datos = new JSONArray(jsonDatos);
+        for(int i = 0; i < datos.length(); i++){
+            elemento = datos.getJSONObject(i);
+            if(elemento.getString("id").equals(pIdPelicula)){
+                break;
+            }
+        }
+        return elemento;
     }
 }
