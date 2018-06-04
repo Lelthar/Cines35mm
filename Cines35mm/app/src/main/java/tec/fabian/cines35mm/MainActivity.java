@@ -122,12 +122,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(tipo.equals("Administrador")) {
             setTitle("Películas Disponibles");
-            fDisponibles disponibles = fDisponibles.newInstance();
+            fDisponibles disponibles = fDisponibles.newInstance(nick);
             ChangeFrag(disponibles);
         }
         else {
             setTitle("Recomendaciones");
-            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick, correo);
+            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick);
             ChangeFrag(recomendaciones);
         }
 
