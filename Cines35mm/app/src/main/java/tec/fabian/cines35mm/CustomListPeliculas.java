@@ -116,6 +116,4 @@ public class CustomListPeliculas extends ArrayAdapter {
         i.putExtra("id_usuario",id_usuario);
         getContext().startActivity(i);
     }
-
-
 }

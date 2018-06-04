@@ -58,7 +58,6 @@ public class fAgregarPelicula extends Fragment {
 
     private static final int SELECT_PICTURE=3513;
     private static final int PERMISSION_REQUEST_CODE=5468;
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     public fAgregarPelicula() {
         // Required empty public constructor

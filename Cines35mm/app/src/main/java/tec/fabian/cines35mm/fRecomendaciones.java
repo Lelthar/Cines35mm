@@ -53,7 +53,6 @@ public class fRecomendaciones extends Fragment {
         NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
         ListaPeliculas=(ListView) rootView.findViewById(R.id.listRecomendaciones);
 
-        //TODO metodo para calcular recomendaciones
         Actualizar_Peliculas();
 
         return rootView;
@@ -69,7 +68,6 @@ public class fRecomendaciones extends Fragment {
                 ArrayList<String> lista_peliculas_usuario = new ArrayList<>();
                 JSONArray favoritos = new JSONArray(fmovies);
                 JSONArray datos = new JSONArray(result);
-
 
                 //saca los favoritos del usuario
                 for (int i = 0; i < favoritos.length(); i++) {
@@ -124,61 +122,70 @@ public class fRecomendaciones extends Fragment {
                     }
                 }
 
-                //ordenar por valor
-                Object[] ordenados = recomendadas_usuario.entrySet().toArray();
-                Arrays.sort(ordenados, new Comparator() {
-                    public int compare(Object o1, Object o2) {
-                        return ((Map.Entry<Integer, Integer>) o2).getValue()
-                                .compareTo(((Map.Entry<Integer, Integer>) o1).getValue());
+                if (recomendadas_usuario != null) {
+                    if (!recomendadas_usuario.isEmpty()) {
+                        NoPeliculas.setVisibility(View.INVISIBLE);
+
+                        //ordenar por valor
+                        Object[] ordenados = recomendadas_usuario.entrySet().toArray();
+                        Arrays.sort(ordenados, new Comparator() {
+                            public int compare(Object o1, Object o2) {
+                                return ((Map.Entry<Integer, Integer>) o2).getValue()
+                                        .compareTo(((Map.Entry<Integer, Integer>) o1).getValue());
+                            }
+                        });
+
+
+                        List<String> nombres = new ArrayList<>();
+                        List<String> generos = new ArrayList<>();
+                        List<String> directores = new ArrayList<>();
+                        List<String> annos = new ArrayList<>();
+                        List<String> actores = new ArrayList<>();
+                        List<String> sinopsis = new ArrayList<>();
+                        List<String> calificacion = new ArrayList<>();
+                        List<String> portadas = new ArrayList<>();
+                        List<String> id_pelicula = new ArrayList<>();
+
+                        JSONObject elemento;
+                        //se agregan ya ordenados por el valor
+                        for (Object a : ordenados) {
+                            int key = ((Map.Entry<Integer, Integer>) a).getKey();
+                            elemento = datos.getJSONObject(key);
+
+                            nombres.add(elemento.getString("nombre"));
+                            generos.add(elemento.getString("genero"));
+                            directores.add(elemento.getString("director"));
+                            annos.add(elemento.getString("anho_estreno"));
+                            actores.add(elemento.getString("actores_principales"));
+                            sinopsis.add(elemento.getString("sinopsis"));
+                            portadas.add(elemento.getString("url_imagen"));
+                            id_pelicula.add(elemento.getString("id"));
+                        }
+
+                        String[] Nombre = nombres.toArray(new String[0]);
+                        String[] Genero = generos.toArray(new String[0]);
+                        String[] Director = directores.toArray(new String[0]);
+                        String[] Anno = annos.toArray(new String[0]);
+                        String[] Actores = actores.toArray(new String[0]);
+                        String[] Sipnosis = sinopsis.toArray(new String[0]);
+                        String[] Calificacion = {null, null};
+                        String[] ImgPortada = portadas.toArray(new String[0]);
+                        String[] IdPelicula = id_pelicula.toArray(new String[0]);
+
+                        adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick, tipoUsuario,ARG_ID,IdPelicula);
+
+                        if (adapter == null) {
+                            NoPeliculas.setVisibility(View.VISIBLE);
+                        } else {
+                            NoPeliculas.setVisibility(View.INVISIBLE);
+                            ListaPeliculas.setAdapter(adapter);
+                        }
                     }
-                });
-
-
-                List<String> nombres = new ArrayList<>();
-                List<String> generos = new ArrayList<>();
-                List<String> directores = new ArrayList<>();
-                List<String> annos = new ArrayList<>();
-                List<String> actores = new ArrayList<>();
-                List<String> sinopsis = new ArrayList<>();
-                List<String> calificacion = new ArrayList<>();
-                List<String> portadas = new ArrayList<>();
-                List<String> id_pelicula = new ArrayList<>();
-
-                JSONObject elemento;
-                //se agregan ya ordenados por el valor
-                for (Object a : ordenados) {
-                    int key = ((Map.Entry<Integer, Integer>) a).getKey();
-                    elemento = datos.getJSONObject(key);
-
-                    nombres.add(elemento.getString("nombre"));
-                    generos.add(elemento.getString("genero"));
-                    directores.add(elemento.getString("director"));
-                    annos.add(elemento.getString("anho_estreno"));
-                    actores.add(elemento.getString("actores_principales"));
-                    sinopsis.add(elemento.getString("sinopsis"));
-                    portadas.add(elemento.getString("url_imagen"));
-                    id_pelicula.add(elemento.getString("id"));
+                    else
+                        NoPeliculas.setVisibility(View.VISIBLE);
                 }
-
-                String[] Nombre = nombres.toArray(new String[0]);
-                String[] Genero = generos.toArray(new String[0]);
-                String[] Director = directores.toArray(new String[0]);
-                String[] Anno = annos.toArray(new String[0]);
-                String[] Actores = actores.toArray(new String[0]);
-                String[] Sipnosis = sinopsis.toArray(new String[0]);
-                String[] Calificacion = {null,null};
-                String[] ImgPortada = portadas.toArray(new String[0]);
-                String[] IdPelicula = id_pelicula.toArray(new String[0]);
-
-                adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario,ARG_ID,IdPelicula);
-
-                if (adapter==null) {
+                else
                     NoPeliculas.setVisibility(View.VISIBLE);
-                } else {
-                    NoPeliculas.setVisibility(View.INVISIBLE);
-                    ListaPeliculas.setAdapter(adapter);
-                }
-
 
 
             }catch (InterruptedException e) {

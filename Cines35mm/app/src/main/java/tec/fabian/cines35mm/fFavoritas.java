@@ -23,19 +23,22 @@ public class fFavoritas extends Fragment {
     private static final String ARG_ID_FAV = "ID";
     private String id_usuario;
     private ListView listView;
+    TextView labelNoFavoritas;
 
-    static String Nick,tipoUsuario;
+    static String Nick, tipoUsuario;
 
     public fFavoritas() {
         // Required empty public constructor
     }
 
-    public static fFavoritas newInstance(String pIdUsuario) {
+    public static fFavoritas newInstance(String TipoUsuario,String pIdUsuario) {
         fFavoritas fragment = new fFavoritas();
 
         Bundle args = new Bundle();
         args.putString(ARG_ID_FAV, pIdUsuario);
         fragment.setArguments(args);
+
+        tipoUsuario=TipoUsuario;
 
         return fragment;
     }
@@ -46,10 +49,12 @@ public class fFavoritas extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_recomendaciones, container, false);
 
-        TextView labelNoFavoritas=(TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
+        labelNoFavoritas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
         labelNoFavoritas.setText("No se han seleccionado películas favoritas");
         listView = rootView.findViewById(R.id.listRecomendaciones);
         id_usuario = this.getArguments().getString(ARG_ID_FAV);
+        labelNoFavoritas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
+
         Actualizar_Peliculas();
         return rootView;
     }
@@ -59,18 +64,18 @@ public class fFavoritas extends Fragment {
         super.onDetach();
     }
 
-    private void Actualizar_Peliculas(){
+    private void Actualizar_Peliculas() {
         Conexion user_extendeds = new Conexion();
         Conexion favorite_movies = new Conexion();
         try {
-            String result = user_extendeds.execute("https://cines35mm.herokuapp.com/movies.json","GET").get();
-            String fmovies = favorite_movies.execute("https://cines35mm.herokuapp.com/favorite_movies.json","GET").get();
+            String result = user_extendeds.execute("https://cines35mm.herokuapp.com/movies.json", "GET").get();
+            String fmovies = favorite_movies.execute("https://cines35mm.herokuapp.com/favorite_movies.json", "GET").get();
             JSONArray datos_favoritos = new JSONArray(fmovies);
             ArrayList<String> lista_peliculas_usuario = new ArrayList<>();
 
-            for(int i = 0; i < datos_favoritos.length(); i++){
+            for (int i = 0; i < datos_favoritos.length(); i++) {
                 JSONObject elemento = datos_favoritos.getJSONObject(i);
-                if(elemento.getString("user_id").equals(id_usuario)){
+                if (elemento.getString("user_id").equals(id_usuario)) {
                     lista_peliculas_usuario.add(elemento.getString("movie_id"));
                 }
             }
@@ -87,10 +92,12 @@ public class fFavoritas extends Fragment {
             List<String> portadas = new ArrayList<>();
             List<String> id_pelicula_list = new ArrayList<>();
 
+
+
             JSONObject elemento;
-            for(int i = 0; i < datos.length(); i++){
+            for (int i = 0; i < datos.length(); i++) {
                 elemento = datos.getJSONObject(i);
-                if(lista_peliculas_usuario.contains(elemento.getString("id"))){
+                if (lista_peliculas_usuario.contains(elemento.getString("id"))) {
                     nombres.add(elemento.getString("nombre"));
                     generos.add(elemento.getString("genero"));
                     directores.add(elemento.getString("director"));
@@ -103,37 +110,44 @@ public class fFavoritas extends Fragment {
                 }
             }
 
-            String[] Nombre = nombres.toArray(new String[0]);
-            String[] Genero = generos.toArray(new String[0]);
-            String[] Director = directores.toArray(new String[0]);
-            String[] Anno = annos.toArray(new String[0]);
-            String[] Actores = actores.toArray(new String[0]);
-            String[] Sipnosis = sinopsis.toArray(new String[0]);
-            String[] Calificacion = calificacion.toArray(new String[0]);
-            String[] ImgPortada = portadas.toArray(new String[0]);
-            String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
+            if (nombres!=null) {
+                if (!nombres.isEmpty()) {
+                    labelNoFavoritas.setVisibility(View.INVISIBLE);
 
-            CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario,id_usuario,IdPelicula);
+                    String[] Nombre = nombres.toArray(new String[0]);
+                    String[] Genero = generos.toArray(new String[0]);
+                    String[] Director = directores.toArray(new String[0]);
+                    String[] Anno = annos.toArray(new String[0]);
+                    String[] Actores = actores.toArray(new String[0]);
+                    String[] Sipnosis = sinopsis.toArray(new String[0]);
+                    String[] Calificacion = calificacion.toArray(new String[0]);
+                    String[] ImgPortada = portadas.toArray(new String[0]);
+                    String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
 
-            if(adapter != null){
-                listView.setAdapter(adapter);
-                TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
-                NoPeliculas.setVisibility(View.INVISIBLE);
-            }else{
-                TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoRecomendaciones);
-                NoPeliculas.setVisibility(View.VISIBLE);
+
+                    CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick, tipoUsuario,id_usuario,IdPelicula);
+
+                    if (adapter != null) {
+                        listView.setAdapter(adapter);
+                        labelNoFavoritas.setVisibility(View.INVISIBLE);
+                    } else {
+                        labelNoFavoritas.setVisibility(View.VISIBLE);
+                    }
+                } else
+                    labelNoFavoritas.setVisibility(View.VISIBLE);
             }
+            else
+                labelNoFavoritas.setVisibility(View.VISIBLE);
 
 
         } catch (InterruptedException e) {
-            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         } catch (ExecutionException e) {
-            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
-            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
 
 
     }
-
 }

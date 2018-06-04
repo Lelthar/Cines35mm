@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:
-                    fFavoritas favoritas = fFavoritas.newInstance(id_usuario);
+                    fFavoritas favoritas = fFavoritas.newInstance(tipo,id_usuario);
                     ChangeFrag(favoritas);
                     break;
                 case 4:

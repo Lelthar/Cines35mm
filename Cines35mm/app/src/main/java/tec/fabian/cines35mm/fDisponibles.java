@@ -37,7 +37,7 @@ public class fDisponibles extends Fragment {
         // Required empty public constructor
     }
 
-    public static fDisponibles newInstance(String nick,String TipoUsuario, String pIdUsuario) {
+    public static fDisponibles newInstance(String nick,String TipoUsuario,String pIdUsuario) {
         fDisponibles fragment = new fDisponibles();
         Nick=nick;
         tipoUsuario=TipoUsuario;
@@ -107,70 +107,75 @@ public class fDisponibles extends Fragment {
         }
     }
 
-    private void Actualizar_Peliculas(String Buscar){
+    private void Actualizar_Peliculas(String Buscar) {
         try {
-            if(!Buscar.equals("Todo"))
+            if (!Buscar.equals("Todo"))
                 Actualizar_Datos();
 
             JSONArray datos = TodasPeliculas;
 
-            if(!Buscar.equals("Todo"))
-                datos=BuscarPeliculas(Buscar,datos);
+            if (!Buscar.equals("Todo"))
+                datos = BuscarPeliculas(Buscar, datos);
 
-            if (datos==null) {
+            if (datos == null) {
                 NoPeliculasDisponibles.setVisibility(View.VISIBLE);
             } else {
-                NoPeliculasDisponibles.setVisibility(View.INVISIBLE);
-                List<String> nombres = new ArrayList<>();
-                List<String> generos = new ArrayList<>();
-                List<String> directores = new ArrayList<>();
-                List<String> annos = new ArrayList<>();
-                List<String> actores = new ArrayList<>();
-                List<String> sinopsis = new ArrayList<>();
-                List<String> calificacion = new ArrayList<>();
-                List<String> portadas = new ArrayList<>();
-                List<String> id_pelicula_list = new ArrayList<>();
+                if (datos.length() > 0) {
+                    NoPeliculasDisponibles.setVisibility(View.INVISIBLE);
+                    List<String> nombres = new ArrayList<>();
+                    List<String> generos = new ArrayList<>();
+                    List<String> directores = new ArrayList<>();
+                    List<String> annos = new ArrayList<>();
+                    List<String> actores = new ArrayList<>();
+                    List<String> sinopsis = new ArrayList<>();
+                    List<String> calificacion = new ArrayList<>();
+                    List<String> portadas = new ArrayList<>();
+                    List<String> id_pelicula_list = new ArrayList<>();
 
-                JSONObject elemento;
-                for (int i = 0; i < datos.length(); i++) {
-                    elemento = datos.getJSONObject(i);
+                    JSONObject elemento;
+                    for (int i = 0; i < datos.length(); i++) {
+                        elemento = datos.getJSONObject(i);
 
-                    nombres.add(elemento.getString("nombre"));
-                    generos.add(elemento.getString("genero"));
-                    directores.add(elemento.getString("director"));
-                    annos.add(elemento.getString("anho_estreno"));
-                    actores.add(elemento.getString("actores_principales"));
-                    sinopsis.add(elemento.getString("sinopsis"));
-                    portadas.add(elemento.getString("url_imagen"));
-                    id_pelicula_list.add(elemento.getString("id"));
+                        nombres.add(elemento.getString("nombre"));
+                        generos.add(elemento.getString("genero"));
+                        directores.add(elemento.getString("director"));
+                        annos.add(elemento.getString("anho_estreno"));
+                        actores.add(elemento.getString("actores_principales"));
+                        sinopsis.add(elemento.getString("sinopsis"));
+                        portadas.add(elemento.getString("url_imagen"));
+                        id_pelicula_list.add(elemento.getString("id"));
+                    }
+
+                    String[] Nombre = nombres.toArray(new String[0]);
+                    String[] Genero = generos.toArray(new String[0]);
+                    String[] Director = directores.toArray(new String[0]);
+                    String[] Anno = annos.toArray(new String[0]);
+                    String[] Actores = actores.toArray(new String[0]);
+                    ;
+                    String[] Sipnosis = sinopsis.toArray(new String[0]);
+                    ;
+                    String[] Calificacion = {null, null};
+                    String[] ImgPortada = portadas.toArray(new String[0]);
+                    String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
+
+                    CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick, tipoUsuario,id_usuario,IdPelicula);
+
+                    if (adapter != null) {
+                        ListaPeliculas.setAdapter(adapter);
+                        TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
+                        NoPeliculas.setVisibility(View.INVISIBLE);
+                    } else {
+                        TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
+                        NoPeliculas.setVisibility(View.VISIBLE);
+                    }
                 }
-
-                String[] Nombre = nombres.toArray(new String[0]);
-                String[] Genero = generos.toArray(new String[0]);
-                String[] Director = directores.toArray(new String[0]);
-                String[] Anno = annos.toArray(new String[0]);
-                String[] Actores = actores.toArray(new String[0]);
-                ;
-                String[] Sipnosis = sinopsis.toArray(new String[0]);
-                ;
-                String[] Calificacion = {null, null};
-                String[] ImgPortada = portadas.toArray(new String[0]);
-                String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
-
-                CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick,tipoUsuario,id_usuario,IdPelicula);
-
-                if (adapter != null) {
-                    ListaPeliculas.setAdapter(adapter);
-                    TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
-                    NoPeliculas.setVisibility(View.INVISIBLE);
-                } else {
-                    TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
-                    NoPeliculas.setVisibility(View.VISIBLE);
-                }
+                else
+                    NoPeliculasDisponibles.setVisibility(View.VISIBLE);
             }
         } catch (JSONException e) {
-            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private JSONArray BuscarPeliculas(String Buscar, JSONArray datos) throws JSONException {
