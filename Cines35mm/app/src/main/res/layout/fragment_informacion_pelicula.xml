@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fInformacionPelicula"
-    android:layout_marginTop="43dp">
+    android:layout_marginTop="50dp">
 
     <ImageView
         android:id="@+id/imgPortada"

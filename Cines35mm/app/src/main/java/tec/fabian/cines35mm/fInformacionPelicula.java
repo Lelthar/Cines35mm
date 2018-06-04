@@ -65,11 +65,11 @@ public class fInformacionPelicula extends Fragment {
         }
 
         lbNombrePelicula.setText(Nombre);
-        lbGenero.setText(Genero);
-        lbDirector.setText(Director);
-        lbAnno.setText(Anno);
-        lbActores.setText(Actores);
-        lbSipnosis.setText(Sipnosis);
+        lbGenero.setText("Género: "+Genero);
+        lbDirector.setText("Director: "+Director);
+        lbAnno.setText("Año: "+Anno);
+        lbActores.setText("Actores: "+Actores);
+        lbSipnosis.setText("Sipnosis: "+Sipnosis);
 
 
         return rootView;
