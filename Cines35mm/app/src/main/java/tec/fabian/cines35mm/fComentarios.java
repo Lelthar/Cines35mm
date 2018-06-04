@@ -162,19 +162,36 @@ public class fComentarios extends Fragment {
         String strComentario = comentario.getText().toString();
 
         if (!strComentario.isEmpty()) {
-            Conexion conexion = new Conexion();
+            Conexion user_extendeds = new Conexion();
+            String usuarios = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json", "GET").get();
+            TodosUsuarios = new JSONArray(usuarios);
 
-            JSONObject json_parametros = new JSONObject();
-            json_parametros.put("user_id", id_usuario);
-            json_parametros.put("comentario", strComentario);
-            json_parametros.put("movie_id", id_pelicula);
-            String result = conexion.execute("https://cines35mm.herokuapp.com/commentaries", "POST", json_parametros.toString()).get();
+            JSONObject usuario;
+            Boolean Registrar=false;
+            for (int k = 0; k < TodosUsuarios.length(); k++) {
+                usuario = TodosUsuarios.getJSONObject(k);
+                if (usuario.getString("id").equals(id_usuario) && usuario.getString("disponible").equals("true"))
+                    Registrar=true;
+            }
 
-            if(result.equals("Created")) {
-                Toast.makeText(rootView.getContext(), "Se publicó exitosamente el comentario.", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(rootView.getContext(), "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(rootView.getContext(), json_parametros.toString(), Toast.LENGTH_LONG).show();
+            if(Registrar) {
+                Conexion conexion = new Conexion();
+
+                JSONObject json_parametros = new JSONObject();
+                json_parametros.put("user_id", id_usuario);
+                json_parametros.put("comentario", strComentario);
+                json_parametros.put("movie_id", id_pelicula);
+                String result = conexion.execute("https://cines35mm.herokuapp.com/commentaries", "POST", json_parametros.toString()).get();
+
+                if (result.equals("Created")) {
+                    Toast.makeText(rootView.getContext(), "Se publicó exitosamente el comentario.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(rootView.getContext(), "Ocurrió un error inesperado." + result.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(rootView.getContext(), json_parametros.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+            else{
+                Toast.makeText(rootView.getContext(), "No puede comentar porque su usuario esta bloqueado.", Toast.LENGTH_LONG).show();
             }
 
         } else {
