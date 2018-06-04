@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".fComentarios">
 
+    <TextView
+        android:id="@+id/labelNoComentarios"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:background="#5e5e5e"
+        android:textColor="#FFF"
+        android:text="Nadie a comentado todavía"
+        android:visibility="visible"/>
+
     <ListView
         android:id="@+id/listComentarios"
         android:divider="@mipmap/divider"

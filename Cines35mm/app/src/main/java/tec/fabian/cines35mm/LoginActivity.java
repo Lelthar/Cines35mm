@@ -103,13 +103,13 @@ public class LoginActivity extends AppCompatActivity {
         //
         result = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json","GET").get();
 
-        if( ETCorreo.getText().toString().length() == 0 ) {
+        if( ETCorreo.getText().toString().trim().length() == 0 ) {
             ETCorreo.setError("Ingrese el correo");
         }
-        else  if(!isEmailValid(ETCorreo.getText().toString())) {
+        else  if(!isEmailValid(ETCorreo.getText().toString().trim())) {
             ETCorreo.setError("Ingrese un correo válido");
         }
-        else if(ETContrasenna.getText().toString().length() == 0) {
+        else if(ETContrasenna.getText().toString().trim().length() == 0) {
             ETContrasenna.setError("Ingrese la contraseña");
         }
         else {

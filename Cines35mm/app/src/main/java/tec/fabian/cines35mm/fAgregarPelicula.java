@@ -262,7 +262,7 @@ public class fAgregarPelicula extends Fragment {
 
     private void uploadImageS3(String nombreImagen){
 	//Agregar el keypublico y local cuando se vaya a correr, borrarlo cuando se vaya a subir a github
-        BasicAWSCredentials credentials = new BasicAWSCredentials("", "");
+        BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAI3DJRR55SRNPI2DA", "6W0RL34aDupHFlTLDSnQYgw5+5KFW0WhWWUB5ALq");
         AmazonS3Client s3Client = new AmazonS3Client(credentials);
 
         TransferUtility transferUtility =

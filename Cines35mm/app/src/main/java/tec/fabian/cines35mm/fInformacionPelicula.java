@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -61,7 +62,7 @@ public class fInformacionPelicula extends Fragment {
         TextView lbSipnosis = rootView.findViewById(R.id.lbSipnosis);
 
         if(!TextUtils.isEmpty(Portada)){
-            //imgPortada.setImageBitmap(); //TODO mostrar imagen
+            Picasso.with(this.getContext()).load(Portada).into(imgPortada);
         }
 
         lbNombrePelicula.setText(Nombre);
