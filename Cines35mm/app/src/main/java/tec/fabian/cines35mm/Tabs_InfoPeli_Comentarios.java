@@ -51,8 +51,8 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         tipoUsuario=i.getExtras().getString("tipoUsuario");
 
         Bundle args1 = new Bundle();
-        args1.putString("Nick", Nick);
-        args1.putString("Nombre", Nombre);
+        args1.putString("id_usuario", id_usuario);
+        args1.putString("id_pelicula", id_pelicula);
 
         Bundle args2 = new Bundle();
         args2.putString("tipoUsuario", tipoUsuario);

@@ -12,6 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,10 +27,12 @@ import android.widget.Toast;
 public class fComentarios extends Fragment {
     // Variables
     private View rootView;
-    String Nick, NombrePelicula;
+    String id_usuario, id_pelicula;
     EditText Comentario;
     TextView labelNoComentarios;
     ListView listaComentarios;
+    JSONArray TodosComentarios;
+    JSONArray TodosUsuarios;
 
     public fComentarios() {
         // Required empty public constructor
@@ -36,8 +46,8 @@ public class fComentarios extends Fragment {
         rootView= inflater.inflate(R.layout.fragment_comentarios, container, false);
 
         if (getArguments() != null) {
-            Nick=getArguments().getString("Nick");
-            NombrePelicula=getArguments().getString("Nombre");
+            id_usuario=getArguments().getString("id_usuario");
+            id_pelicula=getArguments().getString("id_pelicula");
         }
 
         ImageView btnAgregarComentario=rootView.findViewById(R.id.btnAgregarComentario);
@@ -57,22 +67,85 @@ public class fComentarios extends Fragment {
         return rootView;
     }
 
-    private void ActualizarComentarios(){
-        if(!true) {//TODO validar que existan comentarios
-            labelNoComentarios.setVisibility(View.VISIBLE);
+
+
+    private void Actualizar_Datos() {
+        try {
+            Conexion comentariosConexion = new Conexion();
+            String result = comentariosConexion.execute("https://cines35mm.herokuapp.com/commentaries.json", "GET").get();
+            TodosComentarios = new JSONArray(result);
+
+            Conexion user_extendeds = new Conexion();
+            String result1 = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json", "GET").get();
+            TodosUsuarios = new JSONArray(result1);
+        } catch (InterruptedException e) {
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (ExecutionException e) {
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
-        else{
-            labelNoComentarios.setVisibility(View.INVISIBLE);
+    }
 
-            //TODO buscar comentarios de la pelicula con la variable NombrePelicula
+    private void ActualizarComentarios() {
+        Actualizar_Datos();
 
-            String[] Nicks={"NombrePrueba1","NickPrueba2"};
-            String[] Comentarios={"Comentario de prueba","Segundo comentario de prueba para ver si esto funciona correctamente con un comentario relativamente largo, probando probando probando probando probando probando probando probando probando probando probando probando probando probando probando ok ok"};
+        JSONArray datosComentarios = TodosComentarios;
+        JSONArray datosUsuarios = TodosUsuarios;
+
+        JSONArray comentariosFiltrados = new JSONArray();
+
+        try {
+            if (datosComentarios !=null) {
+                if (datosComentarios.length() > 0) {
+
+                    for (int i = 0; i < datosComentarios.length(); i++) {
+                        JSONObject elemento = datosComentarios.getJSONObject(i);
+                        if (elemento.getString("movie_id").equals(id_pelicula)) {
+                            comentariosFiltrados.put(elemento);
+                        }
+                    }
+
+                    if (comentariosFiltrados != null) {
+                        if (comentariosFiltrados.length() > 0) {
+                            labelNoComentarios.setVisibility(View.INVISIBLE);
+
+                            List<String> nicks = new ArrayList<>();
+                            List<String> comentarios = new ArrayList<>();
+
+                            JSONObject elemento;
+                            for (int i = 0; i < comentariosFiltrados.length(); i++) {
+                                elemento = comentariosFiltrados.getJSONObject(i);
+
+                                JSONObject usuario;
+                                for (int k = 0; k < datosUsuarios.length(); k++) {
+                                    usuario = datosUsuarios.getJSONObject(k);
+                                    if (elemento.get("user_id").equals(usuario.get("id")))
+                                        nicks.add(usuario.getString("nick"));
+                                }
+
+                                comentarios.add(elemento.getString("comentario"));
+                            }
 
 
-            CustomListComentarios customListComentarios = new CustomListComentarios(getActivity(),Comentarios,Nicks);
+                            String[] Nicks = nicks.toArray(new String[0]);
+                            String[] Comentarios = comentarios.toArray(new String[0]);
 
-            listaComentarios.setAdapter(customListComentarios);
+
+                            CustomListComentarios customListComentarios = new CustomListComentarios(getActivity(), Comentarios, Nicks);
+
+                            listaComentarios.setAdapter(customListComentarios);
+                        } else
+                            labelNoComentarios.setVisibility(View.VISIBLE);
+                    } else
+                        labelNoComentarios.setVisibility(View.VISIBLE);
+                } else
+                    labelNoComentarios.setVisibility(View.VISIBLE);
+            } else
+                labelNoComentarios.setVisibility(View.VISIBLE);
+
+        } catch (JSONException e) {
+            Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
