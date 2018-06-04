@@ -69,6 +69,10 @@ public class fRecomendaciones extends Fragment {
                 JSONArray favoritos = new JSONArray(fmovies);
                 JSONArray datos = new JSONArray(result);
 
+                Conexion cali = new Conexion();
+                String result1 = cali.execute("https://cines35mm.herokuapp.com/rating_movies.json", "GET").get();
+                JSONArray calis = new JSONArray(result1);
+
                 //saca los favoritos del usuario
                 for (int i = 0; i < favoritos.length(); i++) {
                     JSONObject elemento = favoritos.getJSONObject(i);
@@ -160,6 +164,24 @@ public class fRecomendaciones extends Fragment {
                             sinopsis.add(elemento.getString("sinopsis"));
                             portadas.add(elemento.getString("url_imagen"));
                             id_pelicula.add(elemento.getString("id"));
+
+                            JSONObject elemento1;
+                            int calificacion1=0;
+                            int cont = 0;
+                            for (int k = 0; k < calis.length(); k++) {
+                                elemento1 = calis.getJSONObject(k);
+
+                                if(elemento.getString("id").equals(elemento1.getString("movie_id"))) {
+                                    calificacion1 = calificacion1 + elemento1.getInt("calificacion");
+                                    cont=cont+1;
+                                }
+
+                            }
+
+                            if(cont!=0)
+                                calificacion.add(Integer.toString((calificacion1/cont)));
+                            else
+                                calificacion.add("-");
                         }
 
                         String[] Nombre = nombres.toArray(new String[0]);
@@ -168,7 +190,7 @@ public class fRecomendaciones extends Fragment {
                         String[] Anno = annos.toArray(new String[0]);
                         String[] Actores = actores.toArray(new String[0]);
                         String[] Sipnosis = sinopsis.toArray(new String[0]);
-                        String[] Calificacion = {null, null};
+                        String[] Calificacion = calificacion.toArray(new String[0]);
                         String[] ImgPortada = portadas.toArray(new String[0]);
                         String[] IdPelicula = id_pelicula.toArray(new String[0]);
 

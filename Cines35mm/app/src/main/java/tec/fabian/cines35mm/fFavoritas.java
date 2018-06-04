@@ -73,6 +73,10 @@ public class fFavoritas extends Fragment {
             JSONArray datos_favoritos = new JSONArray(fmovies);
             ArrayList<String> lista_peliculas_usuario = new ArrayList<>();
 
+            Conexion cali = new Conexion();
+            String result1 = cali.execute("https://cines35mm.herokuapp.com/rating_movies.json", "GET").get();
+            JSONArray calis = new JSONArray(result1);
+
             for (int i = 0; i < datos_favoritos.length(); i++) {
                 JSONObject elemento = datos_favoritos.getJSONObject(i);
                 if (elemento.getString("user_id").equals(id_usuario)) {
@@ -106,7 +110,23 @@ public class fFavoritas extends Fragment {
                     sinopsis.add(elemento.getString("sinopsis"));
                     portadas.add(elemento.getString("url_imagen"));
                     id_pelicula_list.add(elemento.getString("id"));
-                    calificacion.add(null);
+                    JSONObject elemento1;
+                    int calificacion1=0;
+                    int cont = 0;
+                    for (int k = 0; k < calis.length(); k++) {
+                        elemento1 = calis.getJSONObject(k);
+
+                        if(elemento.getString("id").equals(elemento1.getString("movie_id"))) {
+                            calificacion1 = calificacion1 + elemento1.getInt("calificacion");
+                            cont=cont+1;
+                        }
+
+                    }
+
+                    if(cont!=0)
+                        calificacion.add(Integer.toString((calificacion1/cont)));
+                    else
+                        calificacion.add("-");
                 }
             }
 

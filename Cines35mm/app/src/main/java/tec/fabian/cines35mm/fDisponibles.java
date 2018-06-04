@@ -49,6 +49,7 @@ public class fDisponibles extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_disponibles, container, false);
         NoPeliculasDisponibles=rootView.findViewById(R.id.labelNoDisponibles);
@@ -99,6 +100,10 @@ public class fDisponibles extends Fragment {
             Conexion user_extendeds = new Conexion();
             String result = user_extendeds.execute("https://cines35mm.herokuapp.com/movies.json", "GET").get();
             TodasPeliculas = new JSONArray(result);
+
+            Conexion cali = new Conexion();
+            String result1 = cali.execute("https://cines35mm.herokuapp.com/rating_movies.json", "GET").get();
+            TodasCalificacione = new JSONArray(result1);
         } catch (InterruptedException e) {
             Toast.makeText(this.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         } catch (ExecutionException e) {
@@ -114,6 +119,8 @@ public class fDisponibles extends Fragment {
                 Actualizar_Datos();
 
             JSONArray datos = TodasPeliculas;
+
+            JSONArray calis = TodasCalificacione;
 
             if (!Buscar.equals("Todo"))
                 datos = BuscarPeliculas(Buscar, datos);
@@ -145,7 +152,27 @@ public class fDisponibles extends Fragment {
                         sinopsis.add(elemento.getString("sinopsis"));
                         portadas.add(elemento.getString("url_imagen"));
                         id_pelicula_list.add(elemento.getString("id"));
+
+                        JSONObject elemento1;
+                        int calificacion1=0;
+                        int cont = 0;
+                        for (int k = 0; k < calis.length(); k++) {
+                            elemento1 = calis.getJSONObject(k);
+
+                            if(elemento.getString("id").equals(elemento1.getString("movie_id"))) {
+                                calificacion1 = calificacion1 + elemento1.getInt("calificacion");
+                                cont=cont+1;
+                            }
+
+                        }
+
+                        if(cont!=0)
+                            calificacion.add(Integer.toString((calificacion1/cont)));
+                        else
+                            calificacion.add("-");
                     }
+
+
 
                     String[] Nombre = nombres.toArray(new String[0]);
                     String[] Genero = generos.toArray(new String[0]);
@@ -153,9 +180,9 @@ public class fDisponibles extends Fragment {
                     String[] Anno = annos.toArray(new String[0]);
                     String[] Actores = actores.toArray(new String[0]);
                     ;
-                    String[] Sipnosis = sinopsis.toArray(new String[0]);
+                    String[] Calificacion = calificacion.toArray(new String[0]);
                     ;
-                    String[] Calificacion = {null, null};
+                    String[] Sipnosis =sinopsis.toArray(new String[0]);
                     String[] ImgPortada = portadas.toArray(new String[0]);
                     String[] IdPelicula = id_pelicula_list.toArray(new String[0]);
 
