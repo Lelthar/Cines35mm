@@ -165,9 +165,9 @@ public class fComentarios extends Fragment {
             Conexion conexion = new Conexion();
 
             JSONObject json_parametros = new JSONObject();
-            json_parametros.put("user", id_usuario);
+            json_parametros.put("user_id", id_usuario);
             json_parametros.put("comentario", strComentario);
-            json_parametros.put("movie", id_pelicula);
+            json_parametros.put("movie_id", id_pelicula);
             String result = conexion.execute("https://cines35mm.herokuapp.com/commentaries", "POST", json_parametros.toString()).get();
 
             if(result.equals("Created")) {
