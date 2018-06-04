@@ -55,6 +55,8 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         mTabHost.addTab(mTabHost.newTabSpec("Comentarios").setIndicator("Comentarios"),
                 fComentarios.class, args);
 
+
+
         //Cambiar de color los tabs
         mTabHost.getTabWidget().setBackgroundColor(Color.BLACK);
         mTabHost.getTabWidget().setDividerDrawable(R.mipmap.divider);

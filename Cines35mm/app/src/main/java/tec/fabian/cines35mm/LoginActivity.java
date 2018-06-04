@@ -165,6 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Abrir ventana principal
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.putExtra("id",ObtenerDatoJSon(result,"id"));
         i.putExtra("correo",ObtenerDatoJSon(result,"correo"));
         i.putExtra("nick",ObtenerDatoJSon(result,"nick"));
         i.putExtra("tipoUsuario",ObtenerDatoJSon(result,"tipo_cuenta"));

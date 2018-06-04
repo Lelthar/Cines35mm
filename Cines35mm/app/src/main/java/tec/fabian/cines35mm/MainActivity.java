@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public String nick;
     public String correo;
     public String tipo;
+    public String id_usuario;
 
     // Menu desplegable
     private String[] mMenuTitles;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         nick=i.getExtras().getString("nick");
         correo=i.getExtras().getString("correo");
         tipo=i.getExtras().getString("tipoUsuario");
+        id_usuario = i.getExtras().getString("id");
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:
-                    fFavoritas favoritas = fFavoritas.newInstance();
+                    fFavoritas favoritas = fFavoritas.newInstance(this.id_usuario);
                     ChangeFrag(favoritas);
                     break;
                 case 4:
