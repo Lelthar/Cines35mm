@@ -245,7 +245,9 @@ public class EditarPelicula extends AppCompatActivity {
             objetoPelicula.put("director",director);
             objetoPelicula.remove("genero");
             objetoPelicula.put("genero",genero);
-            objetoPelicula.remove("director");
+            objetoPelicula.remove("anho_estreno");
+            objetoPelicula.put("anho_estreno",anho);
+            objetoPelicula.remove("actores_principales");
             objetoPelicula.put("actores_principales",actores);
             objetoPelicula.remove("sinopsis");
             objetoPelicula.put("sinopsis",sinopsis_pelicula);
@@ -258,7 +260,7 @@ public class EditarPelicula extends AppCompatActivity {
             if(result.equals("OK")) {
                 Toast.makeText(this, "Se modificó exitosamente los datos de la pelicula.", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(this, "Ocurrió un error inesperado."+result.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Ocurrió un error inesperado.1"+result.toString(), Toast.LENGTH_LONG).show();
             }
         }else{
             Toast.makeText(this, "Ocurrió un error inesperado.", Toast.LENGTH_LONG).show();
