@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 
 import static java.security.AccessController.getContext;
@@ -65,7 +67,8 @@ public class CustomListPeliculas extends ArrayAdapter {
 
         if (!TextUtils.isEmpty(Portada[position])) {
             //TODO poner imagen en el ImageView
-            new ImageDownload(ImViewPortada).execute(Portada[position]);
+            //new ImageDownload(ImViewPortada).execute(Portada[position]);
+            Picasso.with(this.getContext()).load(Portada[position]).into(ImViewPortada);
         }
 
         //Abrir información de pelicula y comentarios

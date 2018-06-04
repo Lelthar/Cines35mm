@@ -41,7 +41,7 @@ public class fDisponibles extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_disponibles, container, false);
         Toast.makeText(rootView.getContext(),"-- WIP Disponibles --",Toast.LENGTH_SHORT).show();
-
+        ListaPeliculas = rootView.findViewById(R.id.listDisponibles);
         //TODO metodo para mostrar las peliculas disponibles
         Actualizar_Peliculas();
         //TODO metodo para buscar peliculas disponibles
@@ -58,7 +58,7 @@ public class fDisponibles extends Fragment {
 
         Conexion user_extendeds = new Conexion();
         try {
-            String result = user_extendeds.execute("https://cines35mm.herokuapp.com/users.json","GET").get();
+            String result = user_extendeds.execute("https://cines35mm.herokuapp.com/movies.json","GET").get();
 
             JSONArray datos = new JSONArray(result);
 
@@ -78,7 +78,7 @@ public class fDisponibles extends Fragment {
                 nombres.add(elemento.getString("nombre"));
                 generos.add(elemento.getString("genero"));
                 directores.add(elemento.getString("director"));
-                annos.add(elemento.getString("año_estreno"));
+                annos.add(elemento.getString("anho_estreno"));
                 actores.add(elemento.getString("actores_principales"));
                 sinopsis.add(elemento.getString("sinopsis"));
                 portadas.add(elemento.getString("url_imagen"));
@@ -96,16 +96,21 @@ public class fDisponibles extends Fragment {
             CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,null);
 
             //TODO
-            ListaPeliculas.setAdapter(adapter);
-            TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
-            NoPeliculas.setVisibility(View.INVISIBLE);
+            if(adapter != null){
+                ListaPeliculas.setAdapter(adapter);
+                TextView NoPeliculas = (TextView) rootView.findViewById(R.id.labelNoDisponibles);
+                NoPeliculas.setVisibility(View.INVISIBLE);
+            }else{
+                Toast.makeText(this.getContext(),"ERROR.",Toast.LENGTH_SHORT).show();
+            }
+
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
-            e.printStackTrace();
+            Toast.makeText(this.getContext(),e.toString(),Toast.LENGTH_SHORT).show();
         }
 
 
