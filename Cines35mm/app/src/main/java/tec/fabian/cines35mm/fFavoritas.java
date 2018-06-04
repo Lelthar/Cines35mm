@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,15 +24,16 @@ public class fFavoritas extends Fragment {
     private String id_usuario;
     private ListView listView;
 
-    static String Nick;
+    static String Nick,tipoUsuario;
 
     public fFavoritas() {
         // Required empty public constructor
     }
 
-    public static fFavoritas newInstance(String nick) {
+    public static fFavoritas newInstance(String nick,String TipoUsuario) {
         fFavoritas fragment = new fFavoritas();
         Nick=nick;
+        tipoUsuario=TipoUsuario;
         return fragment;
     }
 
@@ -107,7 +107,7 @@ public class fFavoritas extends Fragment {
             String[] Calificacion = calificacion.toArray(new String[0]);
             String[] ImgPortada = portadas.toArray(new String[0]);
 
-            CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick);
+            CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario);
 
             if(adapter != null){
                 listView.setAdapter(adapter);

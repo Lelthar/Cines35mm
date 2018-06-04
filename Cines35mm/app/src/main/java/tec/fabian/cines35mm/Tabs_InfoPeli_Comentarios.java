@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
 
@@ -36,16 +35,21 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         String Sipnosis = i.getExtras().getString("Sipnosis");
         String Actores = i.getExtras().getString("Actores");
         String Portada = i.getExtras().getString("Portada");
+        String tipoUsuario=i.getExtras().getString("tipoUsuario");
 
-        Bundle args = new Bundle();
-        args.putString("Nick", Nick);
-        args.putString("Nombre", Nombre);
-        args.putString("Genero", Genero);
-        args.putString("Director", Director);
-        args.putString("Anno", Anno);
-        args.putString("Sipnosis", Sipnosis);
-        args.putString("Actores", Actores);
-        args.putString("Portada", Portada);
+        Bundle args1 = new Bundle();
+        args1.putString("Nick", Nick);
+        args1.putString("Nombre", Nombre);
+
+        Bundle args2 = new Bundle();
+        args2.putString("tipoUsuario", tipoUsuario);
+        args2.putString("Nombre", Nombre);
+        args2.putString("Genero", Genero);
+        args2.putString("Director", Director);
+        args2.putString("Anno", Anno);
+        args2.putString("Sipnosis", Sipnosis);
+        args2.putString("Actores", Actores);
+        args2.putString("Portada", Portada);
 
         //Poner de título 'Crear Cuenta'
         actionBar.setTitle(Nombre);
@@ -54,9 +58,9 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         mTabHost.setup(this, getSupportFragmentManager(), R.id.contenido_tab);
 
         mTabHost.addTab(mTabHost.newTabSpec("Información Película").setIndicator("Información Película"),
-                fInformacionPelicula.class, args);
+                fInformacionPelicula.class, args2);
         mTabHost.addTab(mTabHost.newTabSpec("Comentarios").setIndicator("Comentarios"),
-                fComentarios.class, args);
+                fComentarios.class, args1);
 
 
 
@@ -81,13 +85,11 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.agregarFavoritas) {
             //TODO agregar metodo para agregar a favoritas (con Nick puede buscar el usuario)
-            Toast.makeText(this,"WIP",Toast.LENGTH_SHORT).show();
             return true;
         }
         else if(id == R.id.agregarCalificacion){
             CharSequence calificaciones[] = new CharSequence[] {"1", "2", "3", "4", "5"};
             new AlertDialog.Builder(this)
-                    .setTitle("Elija la calificación")
                     .setItems(calificaciones, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -95,7 +97,6 @@ public class Tabs_InfoPeli_Comentarios extends AppCompatActivity {
                             //TODO agregar metodo para calificar pelicula (con Nick puede buscar el usuario)
                         }})
                     .show();//*/
-            Toast.makeText(this,"WIP",Toast.LENGTH_SHORT).show();
             return true;
         }
         else if(id==android.R.id.home){

@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fComentarios">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fComentarios"
+    android:layout_marginTop="50dp">
 
     <TextView
         android:id="@+id/labelNoComentarios"
@@ -21,7 +23,30 @@
         android:divider="@mipmap/divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="43dp"
         android:dividerHeight="0dp"/>
+
+
+    <EditText
+        android:id="@+id/txtComentario"
+        android:layout_width="367dp"
+        android:layout_height="43dp"
+        android:backgroundTint="#FFFFFF"
+        android:textSize="20dp"
+        android:ems="10"
+        android:hint="Comentario"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/btnAgregarComentario"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="367dp"
+        app:srcCompat="@android:drawable/ic_menu_send" />
 
 </FrameLayout>

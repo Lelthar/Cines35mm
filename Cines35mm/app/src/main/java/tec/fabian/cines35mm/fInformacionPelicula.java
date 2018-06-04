@@ -1,9 +1,6 @@
 package tec.fabian.cines35mm;
 
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +8,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +22,6 @@ import com.squareup.picasso.Picasso;
 public class fInformacionPelicula extends Fragment {
     // Variables
     private View rootView;
-    String Nick;
 
     public fInformacionPelicula() {
         // Required empty public constructor
@@ -50,6 +44,7 @@ public class fInformacionPelicula extends Fragment {
         String Portada=new String();
 
         if (getArguments() != null) {
+
             Nombre = getArguments().getString("Nombre");
             Genero = getArguments().getString("Genero");
             Director = getArguments().getString("Director");
@@ -88,7 +83,14 @@ public class fInformacionPelicula extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        String tipoUsuario=null;
+        if (getArguments() != null) {
+            tipoUsuario = getArguments().getString("tipoUsuario");
+        }
+
+        if(tipoUsuario!=null)
+            if (tipoUsuario.equals("Cliente"))
+                setHasOptionsMenu(true);
     }
 
     @Override

@@ -15,16 +15,15 @@ import com.squareup.picasso.Picasso;
 public class CustomListPeliculas extends ArrayAdapter {
     private final Activity context;
     String[] Nombre,Portada,Genero,Director, Anno, Sipnosis, Actores, Calificacion;
-    int[] NumeroPelicula;
 
     ImageView ImViewPortada;
-    String Nick;
+    String Nick,tipoUsuario;
 
     int posicion;
 
 
     public CustomListPeliculas(Activity context,
-                     String[] Nombre,String[] Portada,String[] Genero,String[] Director, String[] Anno, String[] Sipnosis, String[] Actores, String[] Calificacion, String Nick) {
+                     String[] Nombre,String[] Portada,String[] Genero,String[] Director, String[] Anno, String[] Sipnosis, String[] Actores, String[] Calificacion, String Nick, String tipoUsuario) {
         super(context, R.layout.item_lista_pelicula, Nombre);
         this.context = context;
         this.Nombre = Nombre;
@@ -35,6 +34,7 @@ public class CustomListPeliculas extends ArrayAdapter {
         this.Sipnosis = Sipnosis;
         this.Actores = Actores;
         this.Calificacion = Calificacion;
+        this.tipoUsuario = tipoUsuario;
         this.Nick = Nick;
     }
 
@@ -101,6 +101,7 @@ public class CustomListPeliculas extends ArrayAdapter {
     private void Abrir_Info(){
         Intent i = new Intent(context, Tabs_InfoPeli_Comentarios.class);
         i.putExtra("Nick",Nick);
+        i.putExtra("tipoUsuario", tipoUsuario);
         i.putExtra("Nombre",Nombre[posicion]);
         i.putExtra("Genero", Genero[posicion]);
         i.putExtra("Director", Director[posicion]);

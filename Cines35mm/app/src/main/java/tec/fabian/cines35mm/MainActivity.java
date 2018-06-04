@@ -111,12 +111,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(tipo.equals("Administrador")) {
             setTitle("Películas Disponibles");
-            fDisponibles disponibles = fDisponibles.newInstance(nick);
+            fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
             ChangeFrag(disponibles);
         }
         else {
             setTitle("Recomendaciones");
-            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick);
+            fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo);
             ChangeFrag(recomendaciones);
         }
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         if(tipo.equals("Administrador")) {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance(nick);
+                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
                     ChangeFrag(disponibles);
                     break;
                 case 2:
@@ -159,15 +159,15 @@ public class MainActivity extends AppCompatActivity {
         }else {
             switch (item) {
                 case 1:
-                    fDisponibles disponibles = fDisponibles.newInstance(nick);
+                    fDisponibles disponibles = fDisponibles.newInstance(nick,tipo);
                     ChangeFrag(disponibles);
                     break;
                 case 2:
-                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick);
+                    fRecomendaciones recomendaciones = fRecomendaciones.newInstance(nick,tipo);
                     ChangeFrag(recomendaciones);
                     break;
                 case 3:
-                    fFavoritas favoritas = fFavoritas.newInstance(nick);
+                    fFavoritas favoritas = fFavoritas.newInstance(nick,tipo);
                     ChangeFrag(favoritas);
                     break;
                 case 4:

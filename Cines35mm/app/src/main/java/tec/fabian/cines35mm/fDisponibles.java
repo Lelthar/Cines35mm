@@ -31,15 +31,16 @@ public class fDisponibles extends Fragment {
     JSONArray TodasPeliculas;
     EditText Busqueda;
 
-    static String Nick;
+    static String Nick,tipoUsuario;
 
     public fDisponibles() {
         // Required empty public constructor
     }
 
-    public static fDisponibles newInstance(String nick) {
+    public static fDisponibles newInstance(String nick,String TipoUsuario) {
         fDisponibles fragment = new fDisponibles();
         Nick=nick;
+        tipoUsuario=TipoUsuario;
         return fragment;
     }
 
@@ -152,7 +153,7 @@ public class fDisponibles extends Fragment {
                 String[] Calificacion = {null, null};
                 String[] ImgPortada = portadas.toArray(new String[0]);
 
-                CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick);
+                CustomListPeliculas adapter = new CustomListPeliculas(this.getActivity(), Nombre, ImgPortada, Genero, Director, Anno, Sipnosis, Actores, Calificacion, Nick,tipoUsuario);
 
                 if (adapter != null) {
                     ListaPeliculas.setAdapter(adapter);

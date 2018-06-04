@@ -8,11 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import org.json.JSONException;
-
-import java.util.concurrent.ExecutionException;
 
 public class fEditarPelicula extends Fragment {
 
@@ -46,7 +41,6 @@ public class fEditarPelicula extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_agregar_pelicula, container, false);
 
-        Toast.makeText(rootView.getContext(),"-- WIP Agregar Pelicula --",Toast.LENGTH_SHORT).show();
         //Se inicializan las variables para los objetos de la interfaz
         portada_pelicula=rootView.findViewById(R.id.imgPortada);
         nombre_pelicula = rootView.findViewById(R.id.txtNombre);

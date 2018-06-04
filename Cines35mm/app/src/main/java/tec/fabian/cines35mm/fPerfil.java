@@ -1,7 +1,6 @@
 package tec.fabian.cines35mm;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -58,11 +57,7 @@ public class fPerfil extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView= inflater.inflate(R.layout.fragment_perfil, container, false);
-        Toast.makeText(rootView.getContext(), "------ WIP Perfil ------", Toast.LENGTH_SHORT).show();
 
-        //TODO crear metodo para recuperar y mostrar informacion del usuario
-        //TODO metodo para editar el nick y el correo (y sus validaciones)
-        //TODO metodo para cambiar contrase
         //Se agregan los objetos de la interfaz
         nickname = this.getArguments().getString(ARG_NICK);
         correo = this.getArguments().getString(ARG_CORREO);

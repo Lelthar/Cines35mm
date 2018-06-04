@@ -47,10 +47,6 @@ public class fBloquear_Desbloquear extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView= inflater.inflate(R.layout.fragment_bloquear__desbloquear, container, false);
-        Toast.makeText(rootView.getContext(), "------ WIP Bloquear/Desbloquear ------", Toast.LENGTH_SHORT).show();
-        //TODO metodo para buscar usuario
-        //TODO mostrar el boton de desbloquear o bloquear segun el usuario encontrado
-        //TODO metodo para bloquear/desbloquear usuario
         //Se inicializan los objetos de la interfaz para acceder a ellos
         boton_bloquear = rootView.findViewById(R.id.btnBloquear);
         boton_desbloquear = rootView.findViewById(R.id.btnDesbloquear);

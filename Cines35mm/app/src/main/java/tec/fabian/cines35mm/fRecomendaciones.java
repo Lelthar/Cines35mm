@@ -16,7 +16,7 @@ public class fRecomendaciones extends Fragment {
     private TextView NoPeliculas;
     ListView ListaPeliculas;
 
-    static String Nick;
+    static String Nick,tipoUsuario;
 
     CustomListPeliculas adapter;
 
@@ -24,9 +24,10 @@ public class fRecomendaciones extends Fragment {
         // Required empty public constructor
     }
 
-    public static fRecomendaciones newInstance(String nick) {
+    public static fRecomendaciones newInstance(String nick, String TipoUsuario) {
         fRecomendaciones fragment = new fRecomendaciones();
         Nick=nick;
+        tipoUsuario=TipoUsuario;
         return fragment;
     }
 
@@ -63,7 +64,7 @@ public class fRecomendaciones extends Fragment {
             String[] Calificacion={null,null};
             String[] ImgPortada={null,null};
 
-            adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick);
+            adapter = new CustomListPeliculas(this.getActivity(),Nombre,ImgPortada,Genero,Director,Anno,Sipnosis,Actores,Calificacion,Nick,tipoUsuario);
 
             //TODO
             ListaPeliculas.setAdapter(adapter);
